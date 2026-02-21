@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { adminLogin, seedChurchData } from '@/lib/api';
-import { useSermons, useEvents, useMinistries, useChurchInfo, useServiceTimes, useUpdateChurchData } from '@/hooks/use-church-data';
+import { useSermons, useEvents, useMinistries, useChurchInfo, useServiceTimes, useGivingInfo, useUpdateChurchData } from '@/hooks/use-church-data';
 import {
   SERMONS,
   EVENTS_CALENDAR,
@@ -25,16 +25,20 @@ export function AdminPage() {
   const [eventsJson, setEventsJson] = React.useState('');
   const [servicesJson, setServicesJson] = React.useState('');
   const [ministriesJson, setMinistriesJson] = React.useState('');
+  const [givingJson, setGivingJson] = React.useState('');
   const { data: sermons } = useSermons();
   const { data: events } = useEvents();
   const { data: ministries } = useMinistries();
   const { data: churchInfo } = useChurchInfo();
   const { data: serviceTimes } = useServiceTimes();
+  const { data: givingInfo } = useGivingInfo();
   const updateMutation = useUpdateChurchData();
-  React.useEffect(() => { if (sermons) setSermonsJson(JSON.stringify(sermons, null, 2)); }, [sermons]);
-  React.useEffect(() => { if (events) setEventsJson(JSON.stringify(events, null, 2)); }, [events]);
-  React.useEffect(() => { if (serviceTimes) setServicesJson(JSON.stringify(serviceTimes, null, 2)); }, [serviceTimes]);
-  React.useEffect(() => { if (ministries) setMinistriesJson(JSON.stringify(ministries, null, 2)); }, [ministries]);
+  // Robust initialization: only set if current state is empty string to prevent overwriting unsaved changes during background re-renders
+  React.useEffect(() => { if (sermons && !sermonsJson) setSermonsJson(JSON.stringify(sermons, null, 2)); }, [sermons, sermonsJson]);
+  React.useEffect(() => { if (events && !eventsJson) setEventsJson(JSON.stringify(events, null, 2)); }, [events, eventsJson]);
+  React.useEffect(() => { if (serviceTimes && !servicesJson) setServicesJson(JSON.stringify(serviceTimes, null, 2)); }, [serviceTimes, servicesJson]);
+  React.useEffect(() => { if (ministries && !ministriesJson) setMinistriesJson(JSON.stringify(ministries, null, 2)); }, [ministries, ministriesJson]);
+  React.useEffect(() => { if (givingInfo && !givingJson) setGivingJson(JSON.stringify(givingInfo, null, 2)); }, [givingInfo, givingJson]);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
@@ -120,7 +124,7 @@ export function AdminPage() {
           </div>
           <div className="flex gap-4">
             <Button variant="outline" onClick={handleSeed} className="sketchy-border-sm border-hope-blue text-hope-blue flex gap-2 hover:bg-hope-blue hover:text-white transition-all">
-              <RefreshCw className="w-4 h-4" /> Reset to Hope Way Brand
+              <RefreshCw className="w-4 h-4" /> Reset Brand Defaults
             </Button>
             <Button variant="ghost" onClick={handleLogout} className="text-red-500 hover:bg-red-50 font-bold">Logout</Button>
           </div>
@@ -130,6 +134,7 @@ export function AdminPage() {
             <TabsTrigger value="sermons" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Sermons</TabsTrigger>
             <TabsTrigger value="events" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Events</TabsTrigger>
             <TabsTrigger value="ministries" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Ministries</TabsTrigger>
+            <TabsTrigger value="giving" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Giving</TabsTrigger>
             <TabsTrigger value="info" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Brand Info</TabsTrigger>
           </TabsList>
           <TabsContent value="sermons">
@@ -173,11 +178,26 @@ export function AdminPage() {
                    Save Changes
                 </Button>
               </div>
-              <p className="text-sm text-hope-blue/60 italic">Update ministry titles, descriptions, icons, and theme colors.</p>
               <textarea
                 className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
                 value={ministriesJson}
                 onChange={(e) => setMinistriesJson(e.target.value)}
+              />
+            </IllustrativeCard>
+          </TabsContent>
+          <TabsContent value="giving">
+            <IllustrativeCard className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-display font-bold text-hope-blue">Giving Instructions</h2>
+                <Button onClick={() => handleUpdate('givingInfo', givingJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none">
+                   {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                   Save Changes
+                </Button>
+              </div>
+              <textarea
+                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
+                value={givingJson}
+                onChange={(e) => setGivingJson(e.target.value)}
               />
             </IllustrativeCard>
           </TabsContent>
@@ -188,17 +208,17 @@ export function AdminPage() {
                 <div className="space-y-2">
                    <label className="text-xs font-bold uppercase text-hope-blue/50">Brand Tagline</label>
                    <Input
-                    defaultValue={churchInfo?.tagline}
+                    value={churchInfo?.tagline ?? ""}
                     className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
-                    onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, tagline: e.target.value }))}
+                    onChange={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, tagline: e.target.value }))}
                    />
                 </div>
                 <div className="space-y-2">
                    <label className="text-xs font-bold uppercase text-hope-blue/50">Lead Pastor</label>
                    <Input
-                    defaultValue={churchInfo?.pastor}
+                    value={churchInfo?.pastor ?? ""}
                     className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
-                    onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, pastor: e.target.value }))}
+                    onChange={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, pastor: e.target.value }))}
                    />
                 </div>
               </IllustrativeCard>

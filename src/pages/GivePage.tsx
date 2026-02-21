@@ -10,7 +10,7 @@ export default function GivePage() {
   const copyToClipboard = (text: string, label: string) => {
     if (!text) return;
     navigator.clipboard.writeText(text);
-    toast.success(`${label} copied!`);
+    toast.success(`${label} information copied to clipboard!`);
   };
   if (isLoading) {
     return (
@@ -29,7 +29,7 @@ export default function GivePage() {
             <span className="font-script text-4xl text-hope-gold">Faithful Stewardship</span>
             <h1 className="text-5xl md:text-6xl font-display font-bold text-hope-blue">Giving & Tithing</h1>
             <p className="text-lg text-hope-blue/80 leading-relaxed italic pt-4">
-              "{givingInfo?.whyWeGive}"
+              "{givingInfo?.whyWeGive || "Your support helps Hope Way Ministries impact lives in Accra and beyond."}"
             </p>
             <div className="w-32 h-1.5 bg-hope-gold/30 mx-auto sketchy-border-sm -rotate-2"></div>
           </div>
@@ -40,7 +40,7 @@ export default function GivePage() {
               </div>
               <h2 className="text-2xl font-display font-bold mb-6 text-hope-blue">Mobile Money</h2>
               <div className="space-y-4 flex-1">
-                {givingInfo?.momo?.map((item: any, idx: number) => (
+                {givingInfo?.momo?.length ? givingInfo.momo.map((item: any, idx: number) => (
                   <div key={idx} className="bg-white p-4 sketchy-border-sm hard-shadow-sm group relative">
                     <p className="text-xs font-bold text-hope-gold uppercase tracking-widest">{item.provider}</p>
                     <p className="text-xl font-mono font-bold text-hope-blue my-1">{item.number}</p>
@@ -54,7 +54,7 @@ export default function GivePage() {
                       <Copy className="w-4 h-4" />
                     </Button>
                   </div>
-                ))}
+                )) : <p className="text-hope-blue/50 text-sm">No MoMo accounts listed.</p>}
               </div>
               <p className="text-xs text-hope-blue/50 mt-6 italic">*Reference: [Your Name]</p>
             </IllustrativeCard>
@@ -63,34 +63,40 @@ export default function GivePage() {
                 <Landmark className="w-7 h-7 text-hope-blue" />
               </div>
               <h2 className="text-2xl font-display font-bold mb-6 text-hope-blue">Bank Transfer</h2>
-              <div className="bg-hope-blue/5 p-6 space-y-4 flex-1">
-                <div>
-                  <label className="text-xs font-bold uppercase text-hope-blue/40">Bank Name</label>
-                  <p className="font-bold text-hope-blue">{givingInfo?.bank?.bankName}</p>
-                </div>
-                <div>
-                  <label className="text-xs font-bold uppercase text-hope-blue/40">Account Name</label>
-                  <p className="font-bold text-hope-blue">{givingInfo?.bank?.accountName}</p>
-                </div>
-                <div>
-                  <label className="text-xs font-bold uppercase text-hope-blue/40">Account Number</label>
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="font-mono text-lg font-bold text-hope-blue">{givingInfo?.bank?.accountNumber}</p>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-hope-blue/40 hover:text-hope-gold"
-                      onClick={() => copyToClipboard(givingInfo?.bank?.accountNumber, "Bank Account")}
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
+              {givingInfo?.bank ? (
+                <div className="bg-hope-blue/5 p-6 space-y-4 flex-1">
+                  <div>
+                    <label className="text-xs font-bold uppercase text-hope-blue/40">Bank Name</label>
+                    <p className="font-bold text-hope-blue">{givingInfo.bank.bankName}</p>
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold uppercase text-hope-blue/40">Account Name</label>
+                    <p className="font-bold text-hope-blue">{givingInfo.bank.accountName}</p>
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold uppercase text-hope-blue/40">Account Number</label>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="font-mono text-lg font-bold text-hope-blue">{givingInfo.bank.accountNumber}</p>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-hope-blue/40 hover:text-hope-gold"
+                        onClick={() => copyToClipboard(givingInfo.bank.accountNumber, "Bank Account")}
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold uppercase text-hope-blue/40">Branch</label>
+                    <p className="font-bold text-hope-blue">{givingInfo.bank.branch}</p>
                   </div>
                 </div>
-                <div>
-                  <label className="text-xs font-bold uppercase text-hope-blue/40">Branch</label>
-                  <p className="font-bold text-hope-blue">{givingInfo?.bank?.branch}</p>
+              ) : (
+                <div className="flex-1 flex items-center justify-center p-6 bg-hope-blue/5 text-hope-blue/50 text-sm italic">
+                  Bank information unavailable.
                 </div>
-              </div>
+              )}
             </IllustrativeCard>
             <IllustrativeCard className="flex flex-col border-dashed">
               <div className="w-14 h-14 bg-hope-gold/10 sketchy-border-sm hard-shadow-sm flex items-center justify-center mb-6">
@@ -101,18 +107,12 @@ export default function GivePage() {
                 Experience the joy of giving during our Sunday or midweek services. Our hospitality team is available to assist you with envelopes.
               </p>
               <div className="space-y-3 mb-8">
-                <div className="flex items-center gap-2 text-sm text-hope-blue/80">
-                  <CheckCircle2 className="w-4 h-4 text-green-600" />
-                  <span>Tithes & Special Offerings</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-hope-blue/80">
-                  <CheckCircle2 className="w-4 h-4 text-green-600" />
-                  <span>Welfare & Needy Support</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-hope-blue/80">
-                  <CheckCircle2 className="w-4 h-4 text-green-600" />
-                  <span>Mission Outreach Funds</span>
-                </div>
+                {["Tithes & Special Offerings", "Welfare & Needy Support", "Mission Outreach Funds"].map((item) => (
+                  <div key={item} className="flex items-center gap-2 text-sm text-hope-blue/80">
+                    <CheckCircle2 className="w-4 h-4 text-green-600" />
+                    <span>{item}</span>
+                  </div>
+                ))}
               </div>
               <Button variant="outline" className="w-full sketchy-border-sm border-hope-blue text-hope-blue font-bold h-12 hover:bg-hope-blue hover:text-white">
                 Visit Us

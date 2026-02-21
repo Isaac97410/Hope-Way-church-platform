@@ -4,6 +4,7 @@ import { IllustrativeCard } from '@/components/ui/illustrative-card';
 import { useServiceTimes, useChurchInfo } from '@/hooks/use-church-data';
 import { Button } from '@/components/ui/button';
 import { Clock, MapPin, Play, Quote, Loader2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 export function HomePage() {
   const { data: churchInfo, isLoading: isInfoLoading } = useChurchInfo();
@@ -28,9 +29,11 @@ export function HomePage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-hope-gold hover:bg-hope-gold/90 text-hope-blue font-bold sketchy-border hard-shadow h-14 px-8 text-lg">
-                I'm New Here
-              </Button>
+              <Link to="/about">
+                <Button size="lg" className="bg-hope-gold hover:bg-hope-gold/90 text-hope-blue font-bold sketchy-border hard-shadow h-14 px-8 text-lg">
+                  I'm New Here
+                </Button>
+              </Link>
               <Button variant="outline" size="lg" className="border-hope-blue text-hope-blue hover:bg-hope-blue/5 sketchy-border hard-shadow h-14 px-8 text-lg flex gap-2">
                 <Play className="w-5 h-5 fill-current" /> Watch Sermons
               </Button>
