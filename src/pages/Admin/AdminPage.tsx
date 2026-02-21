@@ -74,9 +74,9 @@ export function AdminPage() {
         serviceTimes: SERVICE_TIMES,
         givingInfo: GIVING_INFO
       }, token);
-      toast.success('Hope Way Ministries data initialized');
+      toast.success('Hope Way Ministries branding initialized to defaults');
     } catch (e) {
-      toast.error('Seeding failed');
+      toast.error('Initialization failed');
     }
   };
   if (!token) {
@@ -93,11 +93,11 @@ export function AdminPage() {
               <Input
                 type="password"
                 placeholder="Enter Admin Password"
-                className="sketchy-border-sm h-12"
+                className="sketchy-border-sm h-12 focus-visible:ring-hope-gold"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Button type="submit" disabled={isLoggingIn} className="w-full bg-hope-blue text-white font-bold h-12 sketchy-border hard-shadow">
+              <Button type="submit" disabled={isLoggingIn} className="w-full bg-hope-blue text-white font-bold h-12 sketchy-border hard-shadow hover:translate-y-0.5">
                 {isLoggingIn ? <Loader2 className="animate-spin mr-2" /> : null}
                 Access Dashboard
               </Button>
@@ -116,29 +116,29 @@ export function AdminPage() {
             <p className="text-hope-gold font-script text-2xl">Hope Way Ministries Management</p>
           </div>
           <div className="flex gap-4">
-            <Button variant="outline" onClick={handleSeed} className="sketchy-border-sm border-hope-blue text-hope-blue flex gap-2 hover:bg-hope-blue/5">
-              <RefreshCw className="w-4 h-4" /> Reset Brand Defaults
+            <Button variant="outline" onClick={handleSeed} className="sketchy-border-sm border-hope-blue text-hope-blue flex gap-2 hover:bg-hope-blue hover:text-white transition-all">
+              <RefreshCw className="w-4 h-4" /> Reset to Hope Way Brand
             </Button>
-            <Button variant="ghost" onClick={handleLogout} className="text-red-500 hover:bg-red-50">Logout</Button>
+            <Button variant="ghost" onClick={handleLogout} className="text-red-500 hover:bg-red-50 font-bold">Logout</Button>
           </div>
         </div>
         <Tabs defaultValue="sermons" className="space-y-8">
           <TabsList className="bg-hope-blue/5 p-1 h-auto flex flex-wrap gap-2 justify-start border-none">
-            <TabsTrigger value="sermons" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2">Sermons</TabsTrigger>
-            <TabsTrigger value="events" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2">Events</TabsTrigger>
-            <TabsTrigger value="info" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2">Brand Info</TabsTrigger>
+            <TabsTrigger value="sermons" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Sermons</TabsTrigger>
+            <TabsTrigger value="events" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Events</TabsTrigger>
+            <TabsTrigger value="info" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2 transition-all font-bold">Brand Info</TabsTrigger>
           </TabsList>
           <TabsContent value="sermons">
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-display font-bold text-hope-blue">Sermon Management</h2>
-                <Button onClick={() => handleUpdate('sermons', sermonsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm">
+                <Button onClick={() => handleUpdate('sermons', sermonsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none">
                   {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
                   Save Changes
                 </Button>
               </div>
               <textarea
-                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white"
+                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
                 value={sermonsJson}
                 onChange={(e) => setSermonsJson(e.target.value)}
               />
@@ -148,13 +148,13 @@ export function AdminPage() {
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-display font-bold text-hope-blue">Events Data</h2>
-                <Button onClick={() => handleUpdate('events', eventsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm">
+                <Button onClick={() => handleUpdate('events', eventsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none">
                    {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
                    Save Changes
                 </Button>
               </div>
               <textarea
-                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white"
+                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
                 value={eventsJson}
                 onChange={(e) => setEventsJson(e.target.value)}
               />
@@ -168,7 +168,7 @@ export function AdminPage() {
                    <label className="text-xs font-bold uppercase text-hope-blue/50">Brand Tagline</label>
                    <Input
                     defaultValue={churchInfo?.tagline}
-                    className="sketchy-border-sm focus-visible:ring-hope-gold"
+                    className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
                     onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, tagline: e.target.value }))}
                    />
                 </div>
@@ -176,7 +176,7 @@ export function AdminPage() {
                    <label className="text-xs font-bold uppercase text-hope-blue/50">Lead Pastor</label>
                    <Input
                     defaultValue={churchInfo?.pastor}
-                    className="sketchy-border-sm focus-visible:ring-hope-gold"
+                    className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
                     onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, pastor: e.target.value }))}
                    />
                 </div>
@@ -184,10 +184,10 @@ export function AdminPage() {
               <IllustrativeCard className="space-y-4">
                 <div className="flex justify-between items-center mb-4">
                    <h3 className="text-xl font-display font-bold text-hope-blue">Service Times</h3>
-                   <Button size="sm" onClick={() => handleUpdate('serviceTimes', servicesJson)} className="bg-hope-blue text-white h-8">Save Times</Button>
+                   <Button size="sm" onClick={() => handleUpdate('serviceTimes', servicesJson)} className="bg-hope-blue text-white h-8 sketchy-border-sm border-none">Save Times</Button>
                 </div>
                 <textarea
-                  className="w-full min-h-[200px] font-mono text-sm p-4 sketchy-border-sm bg-white"
+                  className="w-full min-h-[200px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
                   value={servicesJson}
                   onChange={(e) => setServicesJson(e.target.value)}
                 />

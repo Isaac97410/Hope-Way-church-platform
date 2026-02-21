@@ -37,7 +37,7 @@ export function ChurchLayout({ children }: { children: React.ReactNode }) {
             <div className="w-10 h-10 bg-hope-gold flex items-center justify-center sketchy-border-sm hard-shadow-sm group-hover:scale-110 transition-transform">
               <span className="text-hope-blue font-bold text-xl">W</span>
             </div>
-            <span className="font-display font-bold text-xl hidden sm:inline-block">Hope Way</span>
+            <span className="font-display font-bold text-xl hidden sm:inline-block text-hope-blue">Hope Way</span>
           </Link>
           <div className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
@@ -45,16 +45,18 @@ export function ChurchLayout({ children }: { children: React.ReactNode }) {
                 key={link.path}
                 to={link.path}
                 className={cn(
-                  "text-sm font-semibold hover:text-hope-gold transition-colors",
-                  location.pathname === link.path ? "text-hope-gold underline underline-offset-4 decoration-2" : "text-hope-blue"
+                  "text-sm font-bold hover:text-hope-gold transition-colors",
+                  location.pathname === link.path ? "text-hope-gold underline underline-offset-8 decoration-2" : "text-hope-blue"
                 )}
               >
                 {link.name}
               </Link>
             ))}
-            <Button className="bg-hope-blue hover:bg-hope-blue/90 text-white sketchy-border-sm hard-shadow-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all ml-2">
-              Join Us
-            </Button>
+            <Link to="/contact">
+              <Button className="bg-hope-blue hover:bg-hope-blue/90 text-white font-bold sketchy-border-sm hard-shadow-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all ml-2">
+                Join Us
+              </Button>
+            </Link>
           </div>
           <div className="md:hidden">
             <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(true)}>
@@ -101,9 +103,11 @@ export function ChurchLayout({ children }: { children: React.ReactNode }) {
                 ))}
               </div>
               <div className="mt-auto pt-12">
-                <Button className="w-full bg-hope-gold h-14 text-hope-blue font-bold text-lg sketchy-border hard-shadow">
-                  Give Online
-                </Button>
+                <Link to="/give">
+                  <Button className="w-full bg-hope-gold h-14 text-hope-blue font-bold text-lg sketchy-border hard-shadow border-none">
+                    Give Online
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </>
@@ -118,8 +122,8 @@ export function ChurchLayout({ children }: { children: React.ReactNode }) {
             <h3 className="font-display font-bold text-2xl text-hope-gold">Hope Way Ministries</h3>
             <p className="text-white/70 italic text-sm">"{CHURCH_INFO.tagline}"</p>
             <div className="flex gap-4">
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-hope-gold transition-colors cursor-pointer">
-                <Heart className="w-4 h-4" />
+              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-hope-gold hover:text-hope-blue transition-colors cursor-pointer">
+                <Heart className="w-4 h-4 fill-current" />
               </div>
             </div>
           </div>
