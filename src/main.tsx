@@ -12,6 +12,9 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 import '@/index.css'
 import { HomePage } from '@/pages/HomePage'
+import { AboutPage } from '@/pages/AboutPage'
+import { MinistriesPage } from '@/pages/MinistriesPage'
+import { SermonsPage } from '@/pages/SermonsPage'
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -21,22 +24,22 @@ const router = createBrowserRouter([
   },
   {
     path: "/about",
-    element: <HomePage />, // Placeholder
+    element: <AboutPage />,
     errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/ministries",
-    element: <HomePage />, // Placeholder
+    element: <MinistriesPage />,
     errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/sermons",
-    element: <HomePage />, // Placeholder
+    element: <SermonsPage />,
     errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/give",
-    element: <HomePage />, // Placeholder
+    element: <HomePage />, // To be implemented in next phase
     errorElement: <RouteErrorBoundary />,
   }
 ]);

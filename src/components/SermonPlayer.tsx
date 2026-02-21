@@ -26,41 +26,41 @@ export function SermonPlayer({ sermon, onClose }: SermonPlayerProps) {
       >
         <div className="max-w-3xl mx-auto bg-white sketchy-border hard-shadow p-4 md:p-6 pointer-events-auto flex flex-col md:flex-row items-center gap-6">
           <div className="flex-1 min-w-0">
-            <h4 className="font-display font-bold text-lg truncate text-hope-blue">{sermon.title}</h4>
-            <p className="text-hope-gold text-sm font-bold uppercase tracking-wider">{sermon.speaker}</p>
+            <h4 className="font-display font-bold text-lg truncate">{sermon.title}</h4>
+            <p className="text-terra-cotta text-sm font-medium">{sermon.speaker}</p>
           </div>
           <div className="flex flex-col items-center gap-2 w-full md:w-auto">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" className="hover:text-hope-gold text-hope-blue">
+              <Button variant="ghost" size="icon" className="hover:text-terra-cotta">
                 <SkipBack className="w-5 h-5" />
               </Button>
-              <Button
+              <Button 
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="w-12 h-12 rounded-full bg-hope-blue text-white sketchy-border-sm hard-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5 transition-all"
+                className="w-12 h-12 rounded-full bg-deep-ocean text-white sketchy-border-sm hard-shadow-sm hover:translate-x-0.5 hover:translate-y-0.5"
               >
                 {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 ml-1" />}
               </Button>
-              <Button variant="ghost" size="icon" className="hover:text-hope-gold text-hope-blue">
+              <Button variant="ghost" size="icon" className="hover:text-terra-cotta">
                 <SkipForward className="w-5 h-5" />
               </Button>
             </div>
             <div className="flex items-center gap-3 w-full md:min-w-[300px]">
-              <span className="text-xs font-mono text-hope-blue/60">0:00</span>
-              <Slider
-                value={[progress]}
-                max={100}
-                step={1}
+              <span className="text-xs font-mono text-deep-ocean/60">0:00</span>
+              <Slider 
+                value={[progress]} 
+                max={100} 
+                step={1} 
                 className="flex-1 cursor-pointer"
                 onValueChange={(vals) => setProgress(vals[0])}
               />
-              <span className="text-xs font-mono text-hope-blue/60">45:00</span>
+              <span className="text-xs font-mono text-deep-ocean/60">45:00</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2">
-              <Volume2 className="w-4 h-4 text-hope-blue/60" />
-              <div className="w-20 h-1 bg-hope-blue/10 rounded-full overflow-hidden">
-                <div className="w-2/3 h-full bg-hope-gold" />
+              <Volume2 className="w-4 h-4 text-deep-ocean/60" />
+              <div className="w-20 h-1 bg-deep-ocean/10 rounded-full overflow-hidden">
+                <div className="w-2/3 h-full bg-terra-cotta" />
               </div>
             </div>
             <Button variant="ghost" size="icon" onClick={onClose} className="hover:bg-red-50 text-red-500">
