@@ -10,9 +10,10 @@ export default {
 			script: ['Great Vibes', 'cursive'],
   		},
   		colors: {
-        'bush-sand': '#F4F1DE',
-        'deep-ocean': '#2E4057',
-        'terra-cotta': '#E8A87C',
+        'hope-cream': 'hsl(48 33% 97%)',
+        'hope-blue': 'hsl(216 70% 20%)',
+        'hope-gold': 'hsl(48 100% 55%)',
+        'hope-gold-light': 'hsl(48 80% 70%)',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			primary: {
@@ -27,8 +28,8 @@ export default {
   			},
   		},
   		boxShadow: {
-  			'sketch': '6px 6px 0px 0px rgba(46, 64, 87, 1)',
-  			'sketch-sm': '4px 4px 0px 0px rgba(46, 64, 87, 1)',
+  			'sketch': '6px 6px 0px 0px rgba(30, 58, 138, 1)',
+  			'sketch-sm': '4px 4px 0px 0px rgba(30, 58, 138, 1)',
   		},
   	}
   },

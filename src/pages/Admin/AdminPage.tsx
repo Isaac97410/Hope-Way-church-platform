@@ -21,7 +21,6 @@ export function AdminPage() {
   const [token, setToken] = React.useState<string | null>(localStorage.getItem('admin_token'));
   const [password, setPassword] = React.useState('');
   const [isLoggingIn, setIsLoggingIn] = React.useState(false);
-  // Local states for JSON editing to prevent loops
   const [sermonsJson, setSermonsJson] = React.useState('');
   const [eventsJson, setEventsJson] = React.useState('');
   const [servicesJson, setServicesJson] = React.useState('');
@@ -30,7 +29,6 @@ export function AdminPage() {
   const { data: churchInfo } = useChurchInfo();
   const { data: serviceTimes } = useServiceTimes();
   const updateMutation = useUpdateChurchData();
-  // Initialize local state when data arrives
   React.useEffect(() => { if (sermons) setSermonsJson(JSON.stringify(sermons, null, 2)); }, [sermons]);
   React.useEffect(() => { if (events) setEventsJson(JSON.stringify(events, null, 2)); }, [events]);
   React.useEffect(() => { if (serviceTimes) setServicesJson(JSON.stringify(serviceTimes, null, 2)); }, [serviceTimes]);
@@ -76,7 +74,7 @@ export function AdminPage() {
         serviceTimes: SERVICE_TIMES,
         givingInfo: GIVING_INFO
       }, token);
-      toast.success('KV Store initialized with default data');
+      toast.success('Hope Way Ministries data initialized');
     } catch (e) {
       toast.error('Seeding failed');
     }
@@ -87,9 +85,9 @@ export function AdminPage() {
         <div className="max-w-md mx-auto py-32 px-4">
           <IllustrativeCard className="space-y-6">
             <div className="text-center">
-              <Lock className="w-12 h-12 text-terra-cotta mx-auto mb-4" />
-              <h1 className="text-3xl font-display font-bold">Admin Login</h1>
-              <p className="text-deep-ocean/60 mt-2">Access restricted to church staff.</p>
+              <Lock className="w-12 h-12 text-hope-gold mx-auto mb-4" />
+              <h1 className="text-3xl font-display font-bold text-hope-blue">Admin Login</h1>
+              <p className="text-hope-blue/60 mt-2">Hope Way Staff Access Only.</p>
             </div>
             <form onSubmit={handleLogin} className="space-y-4">
               <Input
@@ -99,9 +97,9 @@ export function AdminPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Button type="submit" disabled={isLoggingIn} className="w-full bg-deep-ocean text-white h-12 sketchy-border hard-shadow">
+              <Button type="submit" disabled={isLoggingIn} className="w-full bg-hope-blue text-white font-bold h-12 sketchy-border hard-shadow">
                 {isLoggingIn ? <Loader2 className="animate-spin mr-2" /> : null}
-                Unlock Dashboard
+                Access Dashboard
               </Button>
             </form>
           </IllustrativeCard>
@@ -114,33 +112,33 @@ export function AdminPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
-            <h1 className="text-4xl font-display font-bold">Church Dashboard</h1>
-            <p className="text-terra-cotta font-script text-2xl">Manage your digital sanctuary</p>
+            <h1 className="text-4xl font-display font-bold text-hope-blue">Ministry Dashboard</h1>
+            <p className="text-hope-gold font-script text-2xl">Hope Way Ministries Management</p>
           </div>
           <div className="flex gap-4">
-            <Button variant="outline" onClick={handleSeed} className="sketchy-border-sm flex gap-2">
-              <RefreshCw className="w-4 h-4" /> Reset to Defaults
+            <Button variant="outline" onClick={handleSeed} className="sketchy-border-sm border-hope-blue text-hope-blue flex gap-2 hover:bg-hope-blue/5">
+              <RefreshCw className="w-4 h-4" /> Reset Brand Defaults
             </Button>
-            <Button variant="ghost" onClick={handleLogout} className="text-red-500">Logout</Button>
+            <Button variant="ghost" onClick={handleLogout} className="text-red-500 hover:bg-red-50">Logout</Button>
           </div>
         </div>
         <Tabs defaultValue="sermons" className="space-y-8">
-          <TabsList className="bg-deep-ocean/5 p-1 h-auto flex flex-wrap gap-2 justify-start border-none">
-            <TabsTrigger value="sermons" className="data-[state=active]:bg-deep-ocean data-[state=active]:text-white sketchy-border-sm px-6 py-2">Sermons</TabsTrigger>
-            <TabsTrigger value="events" className="data-[state=active]:bg-deep-ocean data-[state=active]:text-white sketchy-border-sm px-6 py-2">Events</TabsTrigger>
-            <TabsTrigger value="info" className="data-[state=active]:bg-deep-ocean data-[state=active]:text-white sketchy-border-sm px-6 py-2">Church Info</TabsTrigger>
+          <TabsList className="bg-hope-blue/5 p-1 h-auto flex flex-wrap gap-2 justify-start border-none">
+            <TabsTrigger value="sermons" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2">Sermons</TabsTrigger>
+            <TabsTrigger value="events" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2">Events</TabsTrigger>
+            <TabsTrigger value="info" className="data-[state=active]:bg-hope-blue data-[state=active]:text-white sketchy-border-sm px-6 py-2">Brand Info</TabsTrigger>
           </TabsList>
           <TabsContent value="sermons">
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-display font-bold">Sermon Data Management</h2>
-                <Button onClick={() => handleUpdate('sermons', sermonsJson)} disabled={updateMutation.isPending} className="bg-terra-cotta text-white sketchy-border-sm">
+                <h2 className="text-2xl font-display font-bold text-hope-blue">Sermon Management</h2>
+                <Button onClick={() => handleUpdate('sermons', sermonsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm">
                   {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
-                  Save All Changes
+                  Save Changes
                 </Button>
               </div>
               <textarea
-                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-bush-sand"
+                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white"
                 value={sermonsJson}
                 onChange={(e) => setSermonsJson(e.target.value)}
               />
@@ -149,14 +147,14 @@ export function AdminPage() {
           <TabsContent value="events">
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-display font-bold">Upcoming Events Data</h2>
-                <Button onClick={() => handleUpdate('events', eventsJson)} disabled={updateMutation.isPending} className="bg-terra-cotta text-white sketchy-border-sm">
+                <h2 className="text-2xl font-display font-bold text-hope-blue">Events Data</h2>
+                <Button onClick={() => handleUpdate('events', eventsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm">
                    {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
-                   Save All Changes
+                   Save Changes
                 </Button>
               </div>
               <textarea
-                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-bush-sand"
+                className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white"
                 value={eventsJson}
                 onChange={(e) => setEventsJson(e.target.value)}
               />
@@ -165,31 +163,31 @@ export function AdminPage() {
           <TabsContent value="info">
             <div className="grid md:grid-cols-2 gap-8">
               <IllustrativeCard className="space-y-4">
-                <h3 className="text-xl font-display font-bold">Church Basics</h3>
+                <h3 className="text-xl font-display font-bold text-hope-blue">Church Basics</h3>
                 <div className="space-y-2">
-                   <label className="text-xs font-bold uppercase text-deep-ocean/50">Tagline</label>
+                   <label className="text-xs font-bold uppercase text-hope-blue/50">Brand Tagline</label>
                    <Input
                     defaultValue={churchInfo?.tagline}
-                    className="sketchy-border-sm"
+                    className="sketchy-border-sm focus-visible:ring-hope-gold"
                     onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, tagline: e.target.value }))}
                    />
                 </div>
                 <div className="space-y-2">
-                   <label className="text-xs font-bold uppercase text-deep-ocean/50">Lead Pastor</label>
+                   <label className="text-xs font-bold uppercase text-hope-blue/50">Lead Pastor</label>
                    <Input
                     defaultValue={churchInfo?.pastor}
-                    className="sketchy-border-sm"
+                    className="sketchy-border-sm focus-visible:ring-hope-gold"
                     onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, pastor: e.target.value }))}
                    />
                 </div>
               </IllustrativeCard>
               <IllustrativeCard className="space-y-4">
                 <div className="flex justify-between items-center mb-4">
-                   <h3 className="text-xl font-display font-bold">Service Times</h3>
-                   <Button size="sm" onClick={() => handleUpdate('serviceTimes', servicesJson)} className="bg-deep-ocean text-white h-8">Save Times</Button>
+                   <h3 className="text-xl font-display font-bold text-hope-blue">Service Times</h3>
+                   <Button size="sm" onClick={() => handleUpdate('serviceTimes', servicesJson)} className="bg-hope-blue text-white h-8">Save Times</Button>
                 </div>
                 <textarea
-                  className="w-full min-h-[200px] font-mono text-sm p-4 sketchy-border-sm bg-bush-sand"
+                  className="w-full min-h-[200px] font-mono text-sm p-4 sketchy-border-sm bg-white"
                   value={servicesJson}
                   onChange={(e) => setServicesJson(e.target.value)}
                 />

@@ -15,9 +15,9 @@ export function IllustrativeCard({
     <div
       className={cn(
         "bg-white transition-transform hover:-translate-y-1",
-        sketchyBorder ? "sketchy-border-sm" : "border-2 border-deep-ocean rounded-xl",
+        sketchyBorder ? "sketchy-border-sm" : "border-2 border-hope-blue rounded-xl",
         "hard-shadow-sm p-6",
-        variant === 'accent' && "bg-terra-cotta/10",
+        variant === 'accent' && "bg-hope-gold/10",
         className
       )}
       {...props}

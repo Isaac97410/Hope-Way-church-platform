@@ -1,169 +1,117 @@
 export const CHURCH_INFO = {
-  name: "Harvest Faith Chapel",
+  name: "Hope Way Ministries",
   location: "Accra, Ghana",
-  tagline: "Sowing Seeds of Hope, Harvesting Lives for Christ.",
-  pastor: "Rev. Dr. Kofi Asante",
+  tagline: "Walking in Faith, Living in Hope, Leading in Love.",
+  pastor: "Rev. Martha Allottey",
   contact: {
-    phone: "+233 24 000 0000",
-    email: "welcome@harvestfaithghana.org",
-    address: "123 Faith Lane, East Legon, Accra"
+    phone: "+233 24 555 1234",
+    email: "welcome@hopewayministries.org",
+    address: "Plot 45, Victory Plaza, East Legon, Accra"
   }
 };
 export const LEADERSHIP = [
   {
-    name: "Rev. Dr. Kofi Asante",
-    role: "Lead Pastor",
-    image: "https://images.unsplash.com/photo-1540331547168-8b63109225b7?auto=format&fit=crop&q=80&w=800",
-    bio: "A visionary leader with over 20 years of ministry experience in Ghana and across Africa."
+    name: "Rev. Martha Allottey",
+    role: "General Overseer",
+    image: "https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?auto=format&fit=crop&q=80&w=800",
+    bio: "A dynamic teacher of the Word with a passion for spiritual renewal and community development across Ghana."
   },
   {
-    name: "Pastor Mary Asante",
-    role: "Co-Pastor & Women's Lead",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800",
-    bio: "Dedicated to empowering women and building strong families through the Word of God."
+    name: "Pastor David Mensah",
+    role: "Executive Pastor",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800",
+    bio: "Focused on youth empowerment and organizational excellence within the ministry."
   },
   {
-    name: "Elder Samuel Mensah",
-    role: "Head of Administration",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800",
-    bio: "Ensuring the smooth operation of church activities and community outreach programs."
+    name: "Elder Grace Boateng",
+    role: "Worship Director",
+    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800",
+    bio: "Leading our congregation into divine encounters through heartfelt worship and arts."
   }
 ];
 export const MINISTRIES = [
   {
     id: "m1",
-    title: "Men of Valor",
-    description: "Equipping men to lead with integrity in their homes and society.",
-    color: "bg-[#E8A87C]",
+    title: "Hope Men",
+    description: "Building men of integrity who lead with vision in their families and community.",
+    color: "bg-hope-gold",
     icon: "Users"
   },
   {
     id: "m2",
-    title: "Daughters of Zion",
-    description: "A sisterhood focused on spiritual growth and mutual support.",
+    title: "Women of Grace",
+    description: "Empowering women to walk in their divine purpose and nurture the next generation.",
     color: "bg-[#C4D7B2]",
     icon: "Heart"
   },
   {
     id: "m3",
-    title: "The Harvest Youth",
-    description: "Vibrant community for young people to discover their divine purpose.",
+    title: "Wayfarers Youth",
+    description: "A vibrant space for young people to discover Christ and influence their world.",
     color: "bg-[#A7D397]",
     icon: "Zap"
   },
   {
     id: "m4",
-    title: "Children's Church",
-    description: "Nurturing the next generation in a fun, safe, and biblical environment.",
+    title: "Hope Kids",
+    description: "Providing a joyful and safe foundation for children to grow in the knowledge of God.",
     color: "bg-[#F3D7CA]",
     icon: "Smile"
-  },
-  {
-    id: "m5",
-    title: "Worship & Arts",
-    description: "Leading the congregation into the presence of God through creative expression.",
-    color: "bg-[#D2E9E9]",
-    icon: "Music"
   }
 ];
 export const SERVICE_TIMES = [
   {
     day: "Sunday",
-    title: "Main Worship Service",
-    time: "8:30 AM - 11:30 AM",
-    description: "A time of vibrant praise, deep worship, and life-changing word."
+    title: "Prophetic Worship Service",
+    time: "9:00 AM - 12:00 PM",
+    description: "A transformative encounter with the Holy Spirit through praise and deep teaching."
   },
   {
-    day: "Wednesday",
-    title: "Mid-Week Breakthrough",
-    time: "6:00 PM - 8:00 PM",
-    description: "Intensive prayer and spiritual nourishment."
+    day: "Tuesday",
+    title: "School of the Word",
+    time: "6:30 PM - 8:30 PM",
+    description: "In-depth Bible study and theological exploration."
   },
   {
     day: "Friday",
-    title: "Night of Power",
+    title: "Solution Night",
     time: "10:00 PM - 1:00 AM",
-    description: "Monthly vigil for divine encounters."
+    description: "All-night prayer and intercession for divine breakthroughs."
   }
 ];
 export const EVENTS_CALENDAR = [
   {
     id: "e1",
-    title: "Annual Harvest Festival",
-    date: "2024-11-24",
-    time: "9:00 AM",
-    location: "Main Sanctuary",
-    category: "Special",
-    description: "Our biggest celebration of the year, giving thanks for the fruits of the Spirit and God's provision."
-  },
-  {
-    id: "e2",
-    title: "Youth Impact Conference",
-    date: "2024-06-15",
-    time: "10:00 AM",
-    location: "Main Auditorium",
-    category: "Youth",
-    description: "Empowering the next generation with biblical principles for leadership and life."
-  },
-  {
-    id: "e3",
-    title: "Community Health Outreach",
-    date: "2024-07-02",
-    time: "9:00 AM",
-    location: "Church Grounds",
-    category: "Outreach",
-    description: "Free medical screenings and consultations for our neighbors in East Legon."
-  },
-  {
-    id: "e4",
-    title: "Couples Dinner Night",
-    date: "2024-08-14",
-    time: "6:30 PM",
-    location: "Social Hall",
-    category: "Family",
-    description: "A night of fellowship and rekindling the flame in our marriages."
+    title: "Grace Encounter 2024",
+    date: "2024-12-15",
+    time: "5:00 PM",
+    location: "Hope City Grounds",
+    category: "Convention",
+    description: "Our annual flagship convention bringing together thousands for spiritual restoration."
   }
 ];
 export const GIVING_INFO = {
-  whyWeGive: "At Harvest Faith Chapel, we believe that giving is an act of worship. Your tithes and offerings support our mission to spread the Gospel and serve the vulnerable in our community.",
+  whyWeGive: "Giving is an expression of our gratitude to God. Your support helps Hope Way Ministries impact lives in Accra and beyond.",
   momo: [
-    { provider: "MTN Mobile Money", number: "024 123 4567", name: "Harvest Faith Chapel" },
-    { provider: "Vodafone Cash", number: "020 987 6543", name: "Harvest Faith Chapel" }
+    { provider: "MTN Mobile Money", number: "054 321 0000", name: "Hope Way Ministries" },
+    { provider: "Vodafone Cash", number: "020 111 2222", name: "Hope Way Ministries" }
   ],
   bank: {
-    bankName: "GCB Bank",
-    branch: "East Legon Branch",
-    accountName: "Harvest Faith Chapel Ghana",
-    accountNumber: "1234567890123"
+    bankName: "Zenith Bank Ghana",
+    branch: "East Legon",
+    accountName: "Hope Way Ministries Ghana",
+    accountNumber: "9876543210"
   }
 };
 export const SERMONS = [
   {
     id: "s1",
-    title: "The Power of Persistent Prayer",
-    speaker: "Rev. Dr. Kofi Asante",
-    date: "2024-05-12",
-    category: "Faith",
+    title: "The Way of Hope",
+    speaker: "Rev. Martha Allottey",
+    date: "2024-06-02",
+    category: "Foundation",
     thumbnail: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80&w=800",
     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-  },
-  {
-    id: "s2",
-    title: "Living by Divine Grace",
-    speaker: "Pastor Mary Asante",
-    date: "2024-05-05",
-    category: "Grace",
-    thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&q=80&w=800",
-    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
-  },
-  {
-    id: "s3",
-    title: "Strengthening the Family Altar",
-    speaker: "Rev. Dr. Kofi Asante",
-    date: "2024-04-28",
-    category: "Family",
-    thumbnail: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800",
-    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
   }
 ];
 export const FEATURED_SERMONS = SERMONS.slice(0, 1);

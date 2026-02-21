@@ -4,18 +4,18 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --background: 48 33% 97%; /* #F4F1DE */
-    --foreground: 215 31% 26%; /* #2E4057 */
-    --primary: 23 72% 70%; /* #E8A87C */
-    --primary-foreground: 215 31% 26%;
+    --background: 48 33% 97%; /* #F8F4E6ish Cream */
+    --foreground: 216 70% 20%; /* #1E3A8A Deep Blue */
+    --primary: 48 100% 55%; /* #FFD700 Gold */
+    --primary-foreground: 216 70% 20%;
     --muted: 48 20% 90%;
-    --muted-foreground: 215 20% 40%;
-    --border: 215 31% 26%;
-    --ring: 23 72% 70%;
+    --muted-foreground: 216 20% 40%;
+    --border: 216 70% 20%;
+    --ring: 48 100% 55%;
     --radius: 0.75rem;
   }
   body {
-    @apply bg-[#F4F1DE] text-[#2E4057] font-sans antialiased;
+    @apply bg-[#F4F1DE] text-[#1E3A8A] font-sans antialiased;
     background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
   }
   h1, h2, h3, h4, h5, h6 {
@@ -24,18 +24,18 @@
 }
 @layer components {
   .sketchy-border {
-    border: 2px solid #2E4057;
+    border: 2px solid #1E3A8A;
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
   }
   .sketchy-border-sm {
-    border: 2px solid #2E4057;
+    border: 2px solid #1E3A8A;
     border-radius: 120px 10px 110px 10px/10px 110px 10px 120px;
   }
   .hard-shadow {
-    box-shadow: 6px 6px 0px 0px rgba(46, 64, 87, 1);
+    box-shadow: 6px 6px 0px 0px rgba(30, 58, 138, 1);
   }
   .hard-shadow-sm {
-    box-shadow: 4px 4px 0px 0px rgba(46, 64, 87, 1);
+    box-shadow: 4px 4px 0px 0px rgba(30, 58, 138, 1);
   }
   .font-script {
     font-family: 'Great Vibes', cursive;
