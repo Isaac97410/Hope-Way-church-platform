@@ -77,8 +77,12 @@ export function useUpdateChurchData() {
     mutationFn: ({ type, data, token }: { type: string; data: any; token: string }) =>
       updateChurchData(type, data, token),
     onSuccess: (_, variables) => {
-      // Direct invalidation to trigger refresh across tabs/components
+      // Use the exact type provided in variables to invalidate the correct cache key
       queryClient.invalidateQueries({ queryKey: [variables.type] });
+      // If we update brand basics, it might affect multiple spots
+      if (variables.type === 'churchInfo') {
+        queryClient.invalidateQueries({ queryKey: ['churchInfo'] });
+      }
     },
   });
 }

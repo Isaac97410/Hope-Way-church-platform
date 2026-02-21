@@ -16,16 +16,22 @@ import {
   GIVING_INFO
 } from '@/lib/data';
 import { toast } from 'sonner';
-import { Loader2, Lock, Save, RefreshCw } from 'lucide-react';
+import { Loader2, Lock, Save, RefreshCw, Undo2 } from 'lucide-react';
 export function AdminPage() {
   const [token, setToken] = React.useState<string | null>(localStorage.getItem('admin_token'));
   const [password, setPassword] = React.useState('');
   const [isLoggingIn, setIsLoggingIn] = React.useState(false);
+  // Local state for JSON editors
   const [sermonsJson, setSermonsJson] = React.useState('');
   const [eventsJson, setEventsJson] = React.useState('');
   const [servicesJson, setServicesJson] = React.useState('');
   const [ministriesJson, setMinistriesJson] = React.useState('');
   const [givingJson, setGivingJson] = React.useState('');
+  // Local state for Brand Info (Basics) to avoid mutation on every keystroke
+  const [infoState, setInfoState] = React.useState({
+    tagline: '',
+    pastor: ''
+  });
   const { data: sermons } = useSermons();
   const { data: events } = useEvents();
   const { data: ministries } = useMinistries();
@@ -33,12 +39,21 @@ export function AdminPage() {
   const { data: serviceTimes } = useServiceTimes();
   const { data: givingInfo } = useGivingInfo();
   const updateMutation = useUpdateChurchData();
-  // Robust initialization: only set if current state is empty string to prevent overwriting unsaved changes during background re-renders
-  React.useEffect(() => { if (sermons && !sermonsJson) setSermonsJson(JSON.stringify(sermons, null, 2)); }, [sermons, sermonsJson]);
-  React.useEffect(() => { if (events && !eventsJson) setEventsJson(JSON.stringify(events, null, 2)); }, [events, eventsJson]);
-  React.useEffect(() => { if (serviceTimes && !servicesJson) setServicesJson(JSON.stringify(serviceTimes, null, 2)); }, [serviceTimes, servicesJson]);
-  React.useEffect(() => { if (ministries && !ministriesJson) setMinistriesJson(JSON.stringify(ministries, null, 2)); }, [ministries, ministriesJson]);
-  React.useEffect(() => { if (givingInfo && !givingJson) setGivingJson(JSON.stringify(givingInfo, null, 2)); }, [givingInfo, givingJson]);
+  // Sync server data to local editor state on initial load or reset
+  const syncSermons = React.useCallback(() => { if (sermons) setSermonsJson(JSON.stringify(sermons, null, 2)); }, [sermons]);
+  const syncEvents = React.useCallback(() => { if (events) setEventsJson(JSON.stringify(events, null, 2)); }, [events]);
+  const syncServices = React.useCallback(() => { if (serviceTimes) setServicesJson(JSON.stringify(serviceTimes, null, 2)); }, [serviceTimes]);
+  const syncMinistries = React.useCallback(() => { if (ministries) setMinistriesJson(JSON.stringify(ministries, null, 2)); }, [ministries]);
+  const syncGiving = React.useCallback(() => { if (givingInfo) setGivingJson(JSON.stringify(givingInfo, null, 2)); }, [givingInfo]);
+  const syncInfo = React.useCallback(() => { 
+    if (churchInfo) setInfoState({ tagline: churchInfo.tagline || '', pastor: churchInfo.pastor || '' }); 
+  }, [churchInfo]);
+  React.useEffect(() => { syncSermons(); }, [sermons, syncSermons]);
+  React.useEffect(() => { syncEvents(); }, [events, syncEvents]);
+  React.useEffect(() => { syncServices(); }, [serviceTimes, syncServices]);
+  React.useEffect(() => { syncMinistries(); }, [ministries, syncMinistries]);
+  React.useEffect(() => { syncGiving(); }, [givingInfo, syncGiving]);
+  React.useEffect(() => { syncInfo(); }, [churchInfo, syncInfo]);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
@@ -68,6 +83,14 @@ export function AdminPage() {
     } catch (err) {
       toast.error(`Invalid JSON format in ${type}`);
     }
+  };
+  const saveBrandBasics = () => {
+    if (!token || !churchInfo) return;
+    const newData = { ...churchInfo, ...infoState };
+    updateMutation.mutate({ type: 'churchInfo', data: newData, token }, {
+      onSuccess: () => toast.success('Brand basics updated successfully'),
+      onError: () => toast.error('Failed to update brand basics')
+    });
   };
   const handleSeed = async () => {
     if (!token) return;
@@ -141,10 +164,15 @@ export function AdminPage() {
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-display font-bold text-hope-blue">Sermon Management</h2>
-                <Button onClick={() => handleUpdate('sermons', sermonsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none">
-                  {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
-                  Save Changes
-                </Button>
+                <div className="flex gap-3">
+                  <Button variant="outline" size="sm" onClick={syncSermons} className="sketchy-border-sm border-hope-blue text-hope-blue h-9">
+                    <Undo2 className="w-4 h-4 mr-2" /> Reset
+                  </Button>
+                  <Button onClick={() => handleUpdate('sermons', sermonsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none h-9">
+                    {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                    Save Changes
+                  </Button>
+                </div>
               </div>
               <textarea
                 className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
@@ -157,10 +185,15 @@ export function AdminPage() {
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-display font-bold text-hope-blue">Events Data</h2>
-                <Button onClick={() => handleUpdate('events', eventsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none">
-                   {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
-                   Save Changes
-                </Button>
+                <div className="flex gap-3">
+                  <Button variant="outline" size="sm" onClick={syncEvents} className="sketchy-border-sm border-hope-blue text-hope-blue h-9">
+                    <Undo2 className="w-4 h-4 mr-2" /> Reset
+                  </Button>
+                  <Button onClick={() => handleUpdate('events', eventsJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none h-9">
+                    {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                    Save Changes
+                  </Button>
+                </div>
               </div>
               <textarea
                 className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
@@ -173,10 +206,15 @@ export function AdminPage() {
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-display font-bold text-hope-blue">Ministries Management</h2>
-                <Button onClick={() => handleUpdate('ministries', ministriesJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none">
-                   {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
-                   Save Changes
-                </Button>
+                <div className="flex gap-3">
+                  <Button variant="outline" size="sm" onClick={syncMinistries} className="sketchy-border-sm border-hope-blue text-hope-blue h-9">
+                    <Undo2 className="w-4 h-4 mr-2" /> Reset
+                  </Button>
+                  <Button onClick={() => handleUpdate('ministries', ministriesJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none h-9">
+                    {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                    Save Changes
+                  </Button>
+                </div>
               </div>
               <textarea
                 className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
@@ -189,10 +227,15 @@ export function AdminPage() {
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-display font-bold text-hope-blue">Giving Instructions</h2>
-                <Button onClick={() => handleUpdate('givingInfo', givingJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none">
-                   {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
-                   Save Changes
-                </Button>
+                <div className="flex gap-3">
+                  <Button variant="outline" size="sm" onClick={syncGiving} className="sketchy-border-sm border-hope-blue text-hope-blue h-9">
+                    <Undo2 className="w-4 h-4 mr-2" /> Reset
+                  </Button>
+                  <Button onClick={() => handleUpdate('givingInfo', givingJson)} disabled={updateMutation.isPending} className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm hard-shadow-sm border-none h-9">
+                    {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                    Save Changes
+                  </Button>
+                </div>
               </div>
               <textarea
                 className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"
@@ -203,29 +246,40 @@ export function AdminPage() {
           </TabsContent>
           <TabsContent value="info">
             <div className="grid md:grid-cols-2 gap-8">
-              <IllustrativeCard className="space-y-4">
-                <h3 className="text-xl font-display font-bold text-hope-blue">Church Basics</h3>
-                <div className="space-y-2">
-                   <label className="text-xs font-bold uppercase text-hope-blue/50">Brand Tagline</label>
-                   <Input
-                    value={churchInfo?.tagline ?? ""}
-                    className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
-                    onChange={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, tagline: e.target.value }))}
-                   />
+              <IllustrativeCard className="space-y-6">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-xl font-display font-bold text-hope-blue">Church Basics</h3>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" onClick={syncInfo} className="text-hope-blue">Reset</Button>
+                    <Button size="sm" onClick={saveBrandBasics} className="bg-hope-gold text-hope-blue h-8 sketchy-border-sm border-none font-bold">Save Basics</Button>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                   <label className="text-xs font-bold uppercase text-hope-blue/50">Lead Pastor</label>
-                   <Input
-                    value={churchInfo?.pastor ?? ""}
-                    className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
-                    onChange={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, pastor: e.target.value }))}
-                   />
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase text-hope-blue/50">Brand Tagline</label>
+                    <Input
+                      value={infoState.tagline}
+                      className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
+                      onChange={(e) => setInfoState(prev => ({ ...prev, tagline: e.target.value }))}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold uppercase text-hope-blue/50">Lead Pastor</label>
+                    <Input
+                      value={infoState.pastor}
+                      className="sketchy-border-sm focus-visible:ring-hope-gold border-hope-blue/20"
+                      onChange={(e) => setInfoState(prev => ({ ...prev, pastor: e.target.value }))}
+                    />
+                  </div>
                 </div>
               </IllustrativeCard>
               <IllustrativeCard className="space-y-4">
                 <div className="flex justify-between items-center mb-4">
-                   <h3 className="text-xl font-display font-bold text-hope-blue">Service Times</h3>
-                   <Button size="sm" onClick={() => handleUpdate('serviceTimes', servicesJson)} className="bg-hope-blue text-white h-8 sketchy-border-sm border-none">Save Times</Button>
+                  <h3 className="text-xl font-display font-bold text-hope-blue">Service Times</h3>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="sm" onClick={syncServices} className="text-hope-blue">Reset</Button>
+                    <Button size="sm" onClick={() => handleUpdate('serviceTimes', servicesJson)} className="bg-hope-blue text-white h-8 sketchy-border-sm border-none font-bold">Save Times</Button>
+                  </div>
                 </div>
                 <textarea
                   className="w-full min-h-[200px] font-mono text-sm p-4 sketchy-border-sm bg-white focus:outline-none focus:ring-2 focus:ring-hope-gold border-hope-blue/20"

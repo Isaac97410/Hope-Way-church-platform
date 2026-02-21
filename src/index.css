@@ -16,13 +16,15 @@
   }
   body {
     @apply bg-[#F4F1DE] text-[#1E3A8A] font-sans antialiased;
-    background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
   }
 }
 @layer components {
+  .paper-texture {
+    background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  }
   .sketchy-border {
     border: 2px solid #1E3A8A;
     border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
@@ -43,4 +45,11 @@
   .font-display {
     font-family: 'Playfair Display', serif;
   }
+}
+/* Ensure contrast for gold buttons and elements */
+.bg-hope-gold {
+  color: #1E3A8A !important;
+}
+.bg-hope-blue .text-hope-gold {
+  color: hsl(48 100% 55%) !important;
 }
