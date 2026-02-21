@@ -13,20 +13,20 @@ export const LEADERSHIP = [
   {
     name: "Rev. Martha Allottey",
     role: "General Overseer",
-    image: "https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?auto=format&fit=crop&q=80&w=800",
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800",
     bio: "A dynamic teacher of the Word with a passion for spiritual renewal and community development across Ghana."
   },
   {
-    name: "Pastor David Mensah",
+    name: "Pastor Divine",
     role: "Executive Pastor",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800",
-    bio: "Focused on youth empowerment and organizational excellence within the ministry."
+    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800",
+    bio: "Focused on youth empowerment and organizational excellence, driving the ministry's mission forward with divine vision."
   },
   {
     name: "Elder Grace Boateng",
     role: "Worship Director",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800",
-    bio: "Leading our congregation into divine encounters through heartfelt worship and arts."
+    image: "https://images.unsplash.com/photo-1531123897727-8f129e16fd3c?auto=format&fit=crop&q=80&w=800",
+    bio: "Leading our congregation into divine encounters through heartfelt worship and professional excellence in the arts."
   }
 ];
 export const MINISTRIES = [
@@ -70,13 +70,13 @@ export const SERVICE_TIMES = [
     day: "Tuesday",
     title: "School of the Word",
     time: "6:30 PM - 8:30 PM",
-    description: "In-depth Bible study and theological exploration."
+    description: "In-depth Bible study and theological exploration for spiritual growth."
   },
   {
     day: "Friday",
     title: "Solution Night",
     time: "10:00 PM - 1:00 AM",
-    description: "All-night prayer and intercession for divine breakthroughs."
+    description: "All-night prayer and intercession for divine breakthroughs and spiritual warfare."
   }
 ];
 export const EVENTS_CALENDAR = [
@@ -87,14 +87,23 @@ export const EVENTS_CALENDAR = [
     time: "5:00 PM",
     location: "Hope City Grounds",
     category: "Convention",
-    description: "Our annual flagship convention bringing together thousands for spiritual restoration."
+    description: "Our annual flagship convention bringing together thousands for spiritual restoration and powerful encounters with God."
+  },
+  {
+    id: "e2",
+    title: "Youth Impact Summit",
+    date: "2024-11-20",
+    time: "10:00 AM",
+    location: "Main Sanctuary",
+    category: "Youth",
+    description: "Empowering the next generation to lead with faith and integrity in every sphere of life."
   }
 ];
 export const GIVING_INFO = {
   whyWeGive: "Giving is an expression of our gratitude to God. Your support helps Hope Way Ministries impact lives in Accra and beyond.",
   momo: [
     { provider: "MTN Mobile Money", number: "054 321 0000", name: "Hope Way Ministries" },
-    { provider: "Vodafone Cash", number: "020 111 2222", name: "Hope Way Ministries" }
+    { provider: "Telecel Cash", number: "020 111 2222", name: "Hope Way Ministries" }
   ],
   bank: {
     bankName: "Zenith Bank Ghana",
@@ -112,6 +121,15 @@ export const SERMONS = [
     category: "Foundation",
     thumbnail: "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80&w=800",
     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  },
+  {
+    id: "s2",
+    title: "Kingdom Leadership",
+    speaker: "Pastor Divine",
+    date: "2024-06-09",
+    category: "Leadership",
+    thumbnail: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
   }
 ];
 export const FEATURED_SERMONS = SERMONS.slice(0, 1);

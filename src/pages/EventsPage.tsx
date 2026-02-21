@@ -36,12 +36,12 @@ export function EventsPage() {
               <IllustrativeCard variant="accent" className="p-0 overflow-hidden lg:flex min-h-[400px]">
                 <div className="lg:w-1/2 relative h-64 lg:h-auto">
                   <img
-                    src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1200"
+                    src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=1200"
                     alt={featuredEvent.title}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-4 left-4">
-                    <Badge className="bg-hope-blue text-white sketchy-border-sm px-4 py-1 border-none">Featured Event</Badge>
+                    <Badge className="bg-hope-gold text-hope-blue font-bold sketchy-border-sm px-4 py-1 border-none shadow-sm">Featured Event</Badge>
                   </div>
                 </div>
                 <div className="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center">
@@ -83,7 +83,7 @@ export function EventsPage() {
                     <div className="bg-hope-gold/10 p-3 sketchy-border-sm">
                       <CalendarIcon className="w-6 h-6 text-hope-gold" />
                     </div>
-                    <Badge variant="outline" className="sketchy-border-sm border-hope-blue/20 text-hope-blue">
+                    <Badge variant="outline" className="sketchy-border-sm border-hope-blue/20 text-hope-blue font-bold">
                       {event.category}
                     </Badge>
                   </div>
@@ -95,7 +95,7 @@ export function EventsPage() {
                   <p className="text-hope-blue/70 text-sm mb-8 flex-1 line-clamp-3 leading-relaxed">
                     {event.description}
                   </p>
-                  <Button variant="ghost" className="w-full border-t-2 border-hope-blue/5 pt-4 hover:text-hope-gold flex gap-2 font-bold">
+                  <Button variant="ghost" className="w-full border-t-2 border-hope-blue/5 pt-4 hover:text-hope-gold flex gap-2 font-bold transition-colors">
                     Details <ArrowRight className="w-4 h-4" />
                   </Button>
                 </IllustrativeCard>
@@ -104,10 +104,22 @@ export function EventsPage() {
           </div>
           <section className="mt-24 bg-white sketchy-border hard-shadow p-8 md:p-12 text-center">
             <h2 className="text-3xl font-display font-bold mb-4 text-hope-blue">Past Testimonies</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+              {[
+                "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=400",
+                "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80&w=400",
+                "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&q=80&w=400",
+                "https://images.unsplash.com/photo-1544427928-c49cdfebf194?auto=format&fit=crop&q=80&w=400"
+              ].map((img, i) => (
+                <div key={i} className="aspect-square sketchy-border-sm overflow-hidden hard-shadow-sm group cursor-pointer">
+                  <img src={img} alt="Past event highlight" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                </div>
+              ))}
+            </div>
             <p className="text-hope-blue/70 max-w-2xl mx-auto mb-8">
               God has been faithful in all our gatherings. Browse our media archive to see highlights from previous conferences and community outreach programs.
             </p>
-            <Button variant="outline" className="sketchy-border-sm border-hope-blue text-hope-blue hover:bg-hope-blue hover:text-white">View Photo Gallery</Button>
+            <Button variant="outline" className="sketchy-border-sm border-hope-blue text-hope-blue hover:bg-hope-blue hover:text-white h-12 px-8 font-bold">View Photo Gallery</Button>
           </section>
         </div>
       </div>
