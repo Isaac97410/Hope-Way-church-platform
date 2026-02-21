@@ -24,6 +24,8 @@ export function MinistriesPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {ministries?.map((ministry: any, index: number) => {
             const IconComponent = (LucideIcons as any)[ministry.icon] || LucideIcons.Users;
+            // Use hex color if provided, otherwise fallback to hope-gold
+            const themeColor = ministry.color?.startsWith('#') ? ministry.color : null;
             return (
               <motion.div
                 key={ministry.id}
@@ -37,8 +39,17 @@ export function MinistriesPage() {
                   "bg-white"
                 )}
               >
-                <div className="w-16 h-16 bg-hope-gold/20 sketchy-border-sm hard-shadow-sm flex items-center justify-center mb-6 -rotate-6">
-                  <IconComponent className="w-8 h-8 text-hope-blue" />
+                <div 
+                  className={cn(
+                    "w-16 h-16 sketchy-border-sm hard-shadow-sm flex items-center justify-center mb-6 -rotate-6",
+                    !themeColor && "bg-hope-gold/20"
+                  )}
+                  style={themeColor ? { backgroundColor: `${themeColor}33`, borderColor: themeColor } : {}}
+                >
+                  <IconComponent 
+                    className="w-8 h-8" 
+                    style={themeColor ? { color: 'hsl(216 70% 20%)' } : { color: 'hsl(216 70% 20%)' }} 
+                  />
                 </div>
                 <h3 className="font-display font-bold text-2xl mb-4 text-hope-blue">{ministry.title}</h3>
                 <p className="text-hope-blue/80 mb-8 flex-1 leading-relaxed">

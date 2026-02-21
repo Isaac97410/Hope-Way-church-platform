@@ -33,29 +33,29 @@ export const MINISTRIES = [
   {
     id: "m1",
     title: "Hope Men",
-    description: "Building men of integrity who lead with vision in their families and community.",
-    color: "bg-hope-gold",
+    description: "Building men of integrity and hope who lead with divine vision in their families and Ghana's community.",
+    color: "#E8A87C",
     icon: "Users"
   },
   {
     id: "m2",
     title: "Women of Grace",
-    description: "Empowering women to walk in their divine purpose and nurture the next generation.",
-    color: "bg-[#C4D7B2]",
+    description: "Empowering daughters of the Way to walk in their divine purpose and nurture future generations of believers.",
+    color: "#C4D7B2",
     icon: "Heart"
   },
   {
     id: "m3",
     title: "Wayfarers Youth",
-    description: "A vibrant space for young people to discover Christ and influence their world.",
-    color: "bg-[#A7D397]",
+    description: "A vibrant sanctuary for young people to discover Christ's path and influence their world with hope.",
+    color: "#A7D397",
     icon: "Zap"
   },
   {
     id: "m4",
     title: "Hope Kids",
-    description: "Providing a joyful and safe foundation for children to grow in the knowledge of God.",
-    color: "bg-[#F3D7CA]",
+    description: "Providing a joyful and safe foundation for our little ones to grow in the hope and knowledge of God.",
+    color: "#F3D7CA",
     icon: "Smile"
   }
 ];
