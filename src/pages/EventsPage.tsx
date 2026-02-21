@@ -1,14 +1,27 @@
 import React from 'react';
 import { ChurchLayout } from '@/components/layout/ChurchLayout';
 import { IllustrativeCard } from '@/components/ui/illustrative-card';
-import { EVENTS_CALENDAR } from '@/lib/data';
+import { useEvents } from '@/hooks/use-church-data';
 import { Button } from '@/components/ui/button';
-import { Calendar as CalendarIcon, Clock, MapPin, ArrowRight } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, MapPin, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 export function EventsPage() {
-  const featuredEvent = EVENTS_CALENDAR[0];
-  const upcomingEvents = EVENTS_CALENDAR.slice(1);
+  const { data: events, isLoading } = useEvents();
+
+  if (isLoading) {
+    return (
+      <ChurchLayout>
+        <div className="flex justify-center py-48">
+          <Loader2 className="w-12 h-12 text-terra-cotta animate-spin" />
+        </div>
+      </ChurchLayout>
+    );
+  }
+
+  const featuredEvent = events && events.length > 0 ? events[0] : null;
+  const upcomingEvents = events ? events.slice(1) : [];
+
   return (
     <ChurchLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,7 +31,8 @@ export function EventsPage() {
             <h1 className="text-5xl font-display font-bold mt-2">Upcoming Programs</h1>
           </div>
           {/* Featured Event Hero */}
-          <motion.div
+          {featuredEvent && (
+            <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-20"
@@ -55,10 +69,11 @@ export function EventsPage() {
                 </Button>
               </div>
             </IllustrativeCard>
-          </motion.div>
+            </motion.div>
+          )}
           {/* Events List */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingEvents.map((event, index) => (
+            {upcomingEvents.map((event: any, index: number) => (
               <motion.div
                 key={event.id}
                 initial={{ opacity: 0, y: 20 }}

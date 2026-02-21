@@ -1,11 +1,13 @@
 import React from 'react';
 import { ChurchLayout } from '@/components/layout/ChurchLayout';
-import { MINISTRIES } from '@/lib/data';
+import { useMinistries } from '@/hooks/use-church-data';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import * as LucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 export function MinistriesPage() {
+  const { data: ministries, isLoading } = useMinistries();
   return (
     <ChurchLayout>
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,8 +18,11 @@ export function MinistriesPage() {
           </p>
           <div className="w-24 h-1.5 bg-terra-cotta mx-auto sketchy-border-sm"></div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {MINISTRIES.map((ministry, index) => {
+        {isLoading ? (
+          <div className="flex justify-center py-24"><Loader2 className="animate-spin text-terra-cotta w-10 h-10" /></div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {ministries?.map((ministry: any, index: number) => {
             const IconComponent = (LucideIcons as any)[ministry.icon] || LucideIcons.Users;
             return (
               <motion.div
@@ -49,6 +54,7 @@ export function MinistriesPage() {
             );
           })}
         </div>
+        )}
         <div className="mt-24 p-12 bg-white sketchy-border hard-shadow text-center space-y-6">
           <h2 className="text-3xl font-display font-bold">Not sure where you fit?</h2>
           <p className="text-deep-ocean/70 max-w-xl mx-auto">

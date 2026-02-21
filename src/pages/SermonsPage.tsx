@@ -2,18 +2,21 @@ import React from 'react';
 import { ChurchLayout } from '@/components/layout/ChurchLayout';
 import { IllustrativeCard } from '@/components/ui/illustrative-card';
 import { SermonPlayer } from '@/components/SermonPlayer';
-import { SERMONS } from '@/lib/data';
+import { useSermons } from '@/hooks/use-church-data';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Play, Filter, Calendar, User } from 'lucide-react';
+import { Search, Play, Calendar, User, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 export function SermonsPage() {
   const [searchTerm, setSearchTerm] = React.useState("");
-  const [activeSermon, setActiveSermon] = React.useState<typeof SERMONS[0] | null>(null);
-  const filteredSermons = SERMONS.filter(s => 
+  const { data: sermons, isLoading } = useSermons();
+  const [activeSermon, setActiveSermon] = React.useState<any | null>(null);
+
+  const filteredSermons = sermons?.filter((s: any) =>
     s.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     s.speaker.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   return (
     <ChurchLayout>
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,9 +35,13 @@ export function SermonsPage() {
             />
           </div>
         </div>
-        {filteredSermons.length > 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center py-24">
+            <Loader2 className="w-12 h-12 text-terra-cotta animate-spin" />
+          </div>
+        ) : filteredSermons && filteredSermons.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filteredSermons.map((sermon, index) => (
+            {filteredSermons.map((sermon: any, index: number) => (
               <motion.div
                 key={sermon.id}
                 initial={{ opacity: 0, y: 20 }}

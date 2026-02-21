@@ -19,6 +19,7 @@ import { SermonsPage } from '@/pages/SermonsPage'
 import { EventsPage } from '@/pages/EventsPage'
 import GivePage from '@/pages/GivePage'
 import { ContactPage } from '@/pages/ContactPage'
+import { AdminPage } from '@/pages/Admin/AdminPage'
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -54,6 +55,11 @@ const router = createBrowserRouter([
   {
     path: "/contact",
     element: <ContactPage />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/admin",
+    element: <AdminPage />,
     errorElement: <RouteErrorBoundary />,
   }
 ]);

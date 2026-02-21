@@ -1,13 +1,21 @@
 import React from 'react';
 import { ChurchLayout } from '@/components/layout/ChurchLayout';
 import { IllustrativeCard } from '@/components/ui/illustrative-card';
-import { LEADERSHIP } from '@/lib/data';
+import { useLeadership, useChurchInfo } from '@/hooks/use-church-data';
 import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 export function AboutPage() {
+  const { data: leadership, isLoading: isLeadLoading } = useLeadership();
+  const { data: churchInfo, isLoading: isInfoLoading } = useChurchInfo();
+
   return (
     <ChurchLayout>
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center space-y-6 mb-20">
+        {(isLeadLoading || isInfoLoading) ? (
+          <div className="flex justify-center py-20"><Loader2 className="animate-spin text-terra-cotta" /></div>
+        ) : (
+          <>
+            <div className="max-w-3xl mx-auto text-center space-y-6 mb-20">
           <span className="font-script text-3xl text-terra-cotta">Our Journey</span>
           <h1 className="text-5xl md:text-6xl font-display font-bold">A Legacy of Grace</h1>
           <p className="text-lg text-deep-ocean/80 leading-relaxed">
@@ -43,7 +51,7 @@ export function AboutPage() {
             <p className="text-terra-cotta font-script text-2xl mt-2">Shepherds of the flock</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {LEADERSHIP.map((leader, index) => (
+            {leadership?.map((leader: any, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -68,6 +76,8 @@ export function AboutPage() {
             ))}
           </div>
         </div>
+          </>
+        )}
       </section>
     </ChurchLayout>
   );

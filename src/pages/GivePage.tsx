@@ -1,28 +1,39 @@
 import React from 'react';
 import { ChurchLayout } from '@/components/layout/ChurchLayout';
 import { IllustrativeCard } from '@/components/ui/illustrative-card';
-import { GIVING_INFO } from '@/lib/data';
+import { useGivingInfo } from '@/hooks/use-church-data';
 import { Button } from '@/components/ui/button';
-import { Smartphone, Landmark, HeartHandshake, Copy, CheckCircle2 } from 'lucide-react';
+import { Smartphone, Landmark, HeartHandshake, Copy, CheckCircle2, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 export default function GivePage() {
+  const { data: givingInfo, isLoading } = useGivingInfo();
+
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast.success(`${label} copied!`);
   };
+
+  if (isLoading) {
+    return (
+      <ChurchLayout>
+        <div className="flex justify-center py-48"><Loader2 className="animate-spin text-terra-cotta w-12 h-12" /></div>
+      </ChurchLayout>
+    );
+  }
+
   return (
     <ChurchLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           {/* Header */}
           <div className="max-w-3xl mx-auto text-center mb-16 space-y-4">
-            <span className="font-script text-4xl text-terra-cotta">Honor the Lord with your wealth</span>
-            <h1 className="text-5xl md:text-6xl font-display font-bold">Giving & Tithing</h1>
-            <p className="text-lg text-deep-ocean/80 leading-relaxed italic pt-4">
-              "{GIVING_INFO.whyWeGive}"
-            </p>
-            <div className="w-32 h-1.5 bg-terra-cotta/30 mx-auto sketchy-border-sm -rotate-2"></div>
-          </div>
+          <span className="font-script text-4xl text-terra-cotta">Honor the Lord with your wealth</span>
+          <h1 className="text-5xl md:text-6xl font-display font-bold">Giving & Tithing</h1>
+          <p className="text-lg text-deep-ocean/80 leading-relaxed italic pt-4">
+            "{givingInfo?.whyWeGive}"
+          </p>
+          <div className="w-32 h-1.5 bg-terra-cotta/30 mx-auto sketchy-border-sm -rotate-2"></div>
+        </div>
           {/* Giving Options Grid */}
           <div className="grid lg:grid-cols-3 gap-8 mb-20">
             {/* Mobile Money */}
@@ -32,7 +43,7 @@ export default function GivePage() {
               </div>
               <h2 className="text-2xl font-display font-bold mb-6">Mobile Money</h2>
               <div className="space-y-4 flex-1">
-                {GIVING_INFO.momo.map((item, idx) => (
+                {givingInfo?.momo?.map((item: any, idx: number) => (
                   <div key={idx} className="bg-white p-4 sketchy-border-sm hard-shadow-sm group relative">
                     <p className="text-xs font-bold text-terra-cotta uppercase tracking-widest">{item.provider}</p>
                     <p className="text-xl font-mono font-bold text-deep-ocean my-1">{item.number}</p>
@@ -59,19 +70,19 @@ export default function GivePage() {
               <div className="bg-deep-ocean/5 p-6 space-y-4 flex-1">
                 <div>
                   <label className="text-xs font-bold uppercase text-deep-ocean/40">Bank Name</label>
-                  <p className="font-bold">{GIVING_INFO.bank.bankName}</p>
+                  <p className="font-bold">{givingInfo?.bank?.bankName}</p>
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase text-deep-ocean/40">Account Name</label>
-                  <p className="font-bold">{GIVING_INFO.bank.accountName}</p>
+                  <p className="font-bold">{givingInfo?.bank?.accountName}</p>
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase text-deep-ocean/40">Account Number</label>
                   <div className="flex items-center justify-between gap-2">
-                    <p className="font-mono text-lg font-bold">{GIVING_INFO.bank.accountNumber}</p>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+                    <p className="font-mono text-lg font-bold">{givingInfo?.bank?.accountNumber}</p>
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       className="text-deep-ocean/40 hover:text-terra-cotta"
                       onClick={() => copyToClipboard(GIVING_INFO.bank.accountNumber, "Bank Account")}
                     >
@@ -81,7 +92,7 @@ export default function GivePage() {
                 </div>
                 <div>
                   <label className="text-xs font-bold uppercase text-deep-ocean/40">Branch</label>
-                  <p className="font-bold">{GIVING_INFO.bank.branch}</p>
+                  <p className="font-bold">{givingInfo?.bank?.branch}</p>
                 </div>
               </div>
               <Button className="w-full mt-6 bg-deep-ocean text-white sketchy-border-sm hard-shadow-sm">
