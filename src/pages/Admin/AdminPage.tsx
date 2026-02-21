@@ -27,7 +27,7 @@ export function AdminPage() {
   const [servicesJson, setServicesJson] = React.useState('');
   const [ministriesJson, setMinistriesJson] = React.useState('');
   const [givingJson, setGivingJson] = React.useState('');
-  // Local state for Brand Info (Basics) to avoid mutation on every keystroke
+  // Local state for Brand Info (Basics)
   const [infoState, setInfoState] = React.useState({
     tagline: '',
     pastor: ''
@@ -39,15 +39,17 @@ export function AdminPage() {
   const { data: serviceTimes } = useServiceTimes();
   const { data: givingInfo } = useGivingInfo();
   const updateMutation = useUpdateChurchData();
-  // Sync server data to local editor state on initial load or reset
-  const syncSermons = React.useCallback(() => { if (sermons) setSermonsJson(JSON.stringify(sermons, null, 2)); }, [sermons]);
-  const syncEvents = React.useCallback(() => { if (events) setEventsJson(JSON.stringify(events, null, 2)); }, [events]);
-  const syncServices = React.useCallback(() => { if (serviceTimes) setServicesJson(JSON.stringify(serviceTimes, null, 2)); }, [serviceTimes]);
-  const syncMinistries = React.useCallback(() => { if (ministries) setMinistriesJson(JSON.stringify(ministries, null, 2)); }, [ministries]);
-  const syncGiving = React.useCallback(() => { if (givingInfo) setGivingJson(JSON.stringify(givingInfo, null, 2)); }, [givingInfo]);
-  const syncInfo = React.useCallback(() => { 
-    if (churchInfo) setInfoState({ tagline: churchInfo.tagline || '', pastor: churchInfo.pastor || '' }); 
+  // Reset helpers that use the latest data from the server or fallbacks
+  const syncSermons = React.useCallback(() => { setSermonsJson(JSON.stringify(sermons ?? SERMONS, null, 2)); }, [sermons]);
+  const syncEvents = React.useCallback(() => { setEventsJson(JSON.stringify(events ?? EVENTS_CALENDAR, null, 2)); }, [events]);
+  const syncServices = React.useCallback(() => { setServicesJson(JSON.stringify(serviceTimes ?? SERVICE_TIMES, null, 2)); }, [serviceTimes]);
+  const syncMinistries = React.useCallback(() => { setMinistriesJson(JSON.stringify(ministries ?? MINISTRIES, null, 2)); }, [ministries]);
+  const syncGiving = React.useCallback(() => { setGivingJson(JSON.stringify(givingInfo ?? GIVING_INFO, null, 2)); }, [givingInfo]);
+  const syncInfo = React.useCallback(() => {
+    const info = churchInfo ?? CHURCH_INFO;
+    setInfoState({ tagline: info.tagline || '', pastor: info.pastor || '' });
   }, [churchInfo]);
+  // Initial sync effects
   React.useEffect(() => { syncSermons(); }, [sermons, syncSermons]);
   React.useEffect(() => { syncEvents(); }, [events, syncEvents]);
   React.useEffect(() => { syncServices(); }, [serviceTimes, syncServices]);
@@ -85,8 +87,9 @@ export function AdminPage() {
     }
   };
   const saveBrandBasics = () => {
-    if (!token || !churchInfo) return;
-    const newData = { ...churchInfo, ...infoState };
+    if (!token) return;
+    const baseInfo = churchInfo ?? CHURCH_INFO;
+    const newData = { ...baseInfo, ...infoState };
     updateMutation.mutate({ type: 'churchInfo', data: newData, token }, {
       onSuccess: () => toast.success('Brand basics updated successfully'),
       onError: () => toast.error('Failed to update brand basics')
@@ -104,7 +107,8 @@ export function AdminPage() {
         serviceTimes: SERVICE_TIMES,
         givingInfo: GIVING_INFO
       }, token);
-      toast.success('Hope Way Ministries branding initialized to defaults');
+      toast.success('Branding initialized to defaults. Reloading data...');
+      // Note: react-query hooks will refresh on invalidation
     } catch (e) {
       toast.error('Initialization failed');
     }

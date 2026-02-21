@@ -10,6 +10,7 @@ export function HomePage() {
   const { data: churchInfo, isLoading: isInfoLoading } = useChurchInfo();
   const { data: services, isLoading: isServiceLoading } = useServiceTimes();
   const { data: leadership } = useLeadership();
+  // Synchronized fallback image and name for Rev. Martha Allottey
   const leadPastor = leadership?.[0] || {
     image: "data:image/webp;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltbYGSTW2hsjq5J0DEr4EgSHctX1v2k3Gx8yI4E5W4=",
     name: "Rev. Martha Allottey"
