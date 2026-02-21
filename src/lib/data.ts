@@ -86,24 +86,57 @@ export const SERVICE_TIMES = [
     description: "Monthly vigil for divine encounters."
   }
 ];
-export const UPCOMING_EVENTS = [
+export const EVENTS_CALENDAR = [
   {
-    id: "1",
+    id: "e1",
+    title: "Annual Harvest Festival",
+    date: "2024-11-24",
+    time: "9:00 AM",
+    location: "Main Sanctuary",
+    category: "Special",
+    description: "Our biggest celebration of the year, giving thanks for the fruits of the Spirit and God's provision."
+  },
+  {
+    id: "e2",
     title: "Youth Impact Conference",
     date: "2024-06-15",
     time: "10:00 AM",
     location: "Main Auditorium",
-    category: "Youth"
+    category: "Youth",
+    description: "Empowering the next generation with biblical principles for leadership and life."
   },
   {
-    id: "2",
+    id: "e3",
     title: "Community Health Outreach",
     date: "2024-07-02",
     time: "9:00 AM",
     location: "Church Grounds",
-    category: "Outreach"
+    category: "Outreach",
+    description: "Free medical screenings and consultations for our neighbors in East Legon."
+  },
+  {
+    id: "e4",
+    title: "Couples Dinner Night",
+    date: "2024-08-14",
+    time: "6:30 PM",
+    location: "Social Hall",
+    category: "Family",
+    description: "A night of fellowship and rekindling the flame in our marriages."
   }
 ];
+export const GIVING_INFO = {
+  whyWeGive: "At Harvest Faith Chapel, we believe that giving is an act of worship. Your tithes and offerings support our mission to spread the Gospel and serve the vulnerable in our community.",
+  momo: [
+    { provider: "MTN Mobile Money", number: "024 123 4567", name: "Harvest Faith Chapel" },
+    { provider: "Vodafone Cash", number: "020 987 6543", name: "Harvest Faith Chapel" }
+  ],
+  bank: {
+    bankName: "GCB Bank",
+    branch: "East Legon Branch",
+    accountName: "Harvest Faith Chapel Ghana",
+    accountNumber: "1234567890123"
+  }
+};
 export const SERMONS = [
   {
     id: "s1",
