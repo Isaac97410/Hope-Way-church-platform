@@ -59,10 +59,10 @@ export function AboutPage() {
                 >
                   <div className="relative mb-6">
                     <div className="aspect-[4/5] sketchy-border hard-shadow overflow-hidden bg-white -rotate-2 group-hover:rotate-0 transition-transform duration-500">
-                      <img 
-                        src={leader.image} 
-                        alt={leader.name} 
-                        className="w-full h-full object-cover filter contrast-[1.05] brightness-[1.02]" 
+                      <img
+                        src={leader.image}
+                        alt={leader.name}
+                        className="w-full h-full object-cover filter contrast-[1.05] brightness-[1.02]"
                       />
                     </div>
                     <div className="absolute -bottom-4 -right-2 bg-hope-gold px-4 py-2 sketchy-border-sm hard-shadow-sm rotate-2">
