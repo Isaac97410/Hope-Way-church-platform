@@ -1,6 +1,6 @@
 # Harvest Faith Ghana
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Isaac97410/Hope-Way-church-platform)
 
 A production-ready full-stack application built on Cloudflare Workers and Pages. This template provides a modern React frontend with a Hono-powered API backend, complete with UI components, state management, theming, and seamless deployment to Cloudflare's global edge network.
 
@@ -103,7 +103,7 @@ bun run deploy
 
 This bundles the Worker and uploads assets automatically.
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Isaac97410/Hope-Way-church-platform)
 
 **Manual Steps (Wrangler)**:
 1. Login: `wrangler login`
