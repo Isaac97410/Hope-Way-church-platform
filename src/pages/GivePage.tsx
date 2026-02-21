@@ -7,33 +7,33 @@ import { Smartphone, Landmark, HeartHandshake, Copy, CheckCircle2, Loader2 } fro
 import { toast } from 'sonner';
 export default function GivePage() {
   const { data: givingInfo, isLoading } = useGivingInfo();
-
   const copyToClipboard = (text: string, label: string) => {
+    if (!text) return;
     navigator.clipboard.writeText(text);
     toast.success(`${label} copied!`);
   };
-
   if (isLoading) {
     return (
       <ChurchLayout>
-        <div className="flex justify-center py-48"><Loader2 className="animate-spin text-terra-cotta w-12 h-12" /></div>
+        <div className="flex justify-center py-48">
+          <Loader2 className="animate-spin text-terra-cotta w-12 h-12" />
+        </div>
       </ChurchLayout>
     );
   }
-
   return (
     <ChurchLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           {/* Header */}
           <div className="max-w-3xl mx-auto text-center mb-16 space-y-4">
-          <span className="font-script text-4xl text-terra-cotta">Honor the Lord with your wealth</span>
-          <h1 className="text-5xl md:text-6xl font-display font-bold">Giving & Tithing</h1>
-          <p className="text-lg text-deep-ocean/80 leading-relaxed italic pt-4">
-            "{givingInfo?.whyWeGive}"
-          </p>
-          <div className="w-32 h-1.5 bg-terra-cotta/30 mx-auto sketchy-border-sm -rotate-2"></div>
-        </div>
+            <span className="font-script text-4xl text-terra-cotta">Honor the Lord with your wealth</span>
+            <h1 className="text-5xl md:text-6xl font-display font-bold">Giving & Tithing</h1>
+            <p className="text-lg text-deep-ocean/80 leading-relaxed italic pt-4">
+              "{givingInfo?.whyWeGive}"
+            </p>
+            <div className="w-32 h-1.5 bg-terra-cotta/30 mx-auto sketchy-border-sm -rotate-2"></div>
+          </div>
           {/* Giving Options Grid */}
           <div className="grid lg:grid-cols-3 gap-8 mb-20">
             {/* Mobile Money */}
@@ -48,9 +48,9 @@ export default function GivePage() {
                     <p className="text-xs font-bold text-terra-cotta uppercase tracking-widest">{item.provider}</p>
                     <p className="text-xl font-mono font-bold text-deep-ocean my-1">{item.number}</p>
                     <p className="text-sm text-deep-ocean/60">{item.name}</p>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       className="absolute top-2 right-2 text-deep-ocean/40 hover:text-terra-cotta"
                       onClick={() => copyToClipboard(item.number, item.provider)}
                     >
@@ -84,7 +84,7 @@ export default function GivePage() {
                       variant="ghost"
                       size="icon"
                       className="text-deep-ocean/40 hover:text-terra-cotta"
-                      onClick={() => copyToClipboard(GIVING_INFO.bank.accountNumber, "Bank Account")}
+                      onClick={() => copyToClipboard(givingInfo?.bank?.accountNumber, "Bank Account")}
                     >
                       <Copy className="w-4 h-4" />
                     </Button>
@@ -106,7 +106,7 @@ export default function GivePage() {
               </div>
               <h2 className="text-2xl font-display font-bold mb-4">In Person</h2>
               <p className="text-deep-ocean/70 mb-8 flex-1 leading-relaxed">
-                You can give during any of our weekly services. We provide tithe envelopes at the entrance and during the offering session. 
+                You can give during any of our weekly services. We provide tithe envelopes at the entrance and during the offering session.
               </p>
               <div className="space-y-3 mb-8">
                 <div className="flex items-center gap-2 text-sm text-deep-ocean/80">

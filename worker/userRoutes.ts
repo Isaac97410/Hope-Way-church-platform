@@ -1,41 +1,47 @@
 import { Hono } from "hono";
 import { Env } from './core-utils';
-// We'll define types based on our data structure
-type ChurchData = Record<string, any>;
 const ADMIN_PASSWORD = "harvest2024";
 export function userRoutes(app: Hono<{ Bindings: Env & { KV: KVNamespace } }>) {
     // Auth Middleware
     const authMiddleware = async (c: any, next: () => Promise<void>) => {
         const authHeader = c.req.header('Authorization');
-        if (authHeader === `Bearer ${ADMIN_PASSWORD}`) {
+        if (authHeader && authHeader === `Bearer ${ADMIN_PASSWORD}`) {
             await next();
         } else {
             return c.json({ success: false, error: 'Unauthorized' }, 401);
         }
     };
-    // Public Data Access with fallback and auto-seeding logic
+    // Public Data Access with fallback signaling
     app.get('/api/data/:type', async (c) => {
         const type = c.req.param('type');
         const kv = (c.env as any).KV as KVNamespace;
+        if (!kv) {
+            return c.json({ success: false, error: 'Storage not configured' }, 500);
+        }
         try {
             const data = await kv.get(`church_data_${type}`, 'json');
             if (data) {
                 return c.json({ success: true, data });
             }
-            // Fallback: If not in KV, we'd ideally seed here, but for now we return 404
-            // and let the frontend handle the initial empty state or default to its own constants
+            // If data is null, it means KV is empty for this key. 
+            // We return a 404 to let the frontend React Query use its 'initialData' fallback.
             return c.json({ success: false, error: 'Data not found in store' }, 404);
         } catch (e) {
+            console.error(`KV Read Error for ${type}:`, e);
             return c.json({ success: false, error: 'KV Read Error' }, 500);
         }
     });
     // Admin Login
     app.post('/api/admin/login', async (c) => {
-        const { password } = await c.req.json();
-        if (password === ADMIN_PASSWORD) {
-            return c.json({ success: true, token: ADMIN_PASSWORD });
+        try {
+            const { password } = await c.req.json();
+            if (password === ADMIN_PASSWORD) {
+                return c.json({ success: true, token: ADMIN_PASSWORD });
+            }
+            return c.json({ success: false, error: 'Invalid password' }, 401);
+        } catch (e) {
+            return c.json({ success: false, error: 'Invalid request' }, 400);
         }
-        return c.json({ success: false, error: 'Invalid password' }, 401);
     });
     // Admin CRUD - Create or Update
     app.post('/api/admin/data/:type', authMiddleware, async (c) => {

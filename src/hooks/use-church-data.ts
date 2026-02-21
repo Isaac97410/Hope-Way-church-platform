@@ -1,21 +1,26 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchChurchData, updateChurchData } from '@/lib/api';
-import { 
-  SERMONS, 
-  EVENTS_CALENDAR, 
-  MINISTRIES, 
-  LEADERSHIP, 
-  CHURCH_INFO, 
-  SERVICE_TIMES, 
-  GIVING_INFO 
+import {
+  SERMONS,
+  EVENTS_CALENDAR,
+  MINISTRIES,
+  LEADERSHIP,
+  CHURCH_INFO,
+  SERVICE_TIMES,
+  GIVING_INFO
 } from '@/lib/data';
-// Custom hooks that fall back to static data if KV is empty
+// Common query config for static church content
+const QUERY_CONFIG = {
+  staleTime: 1000 * 60 * 60, // 1 hour
+  gcTime: 1000 * 60 * 60 * 24, // 24 hours
+  retry: 1, // Minimal retry for production reliability
+};
 export function useSermons() {
   return useQuery({
     queryKey: ['sermons'],
     queryFn: () => fetchChurchData<any[]>('sermons'),
     initialData: SERMONS,
-    retry: false
+    ...QUERY_CONFIG,
   });
 }
 export function useEvents() {
@@ -23,7 +28,7 @@ export function useEvents() {
     queryKey: ['events'],
     queryFn: () => fetchChurchData<any[]>('events'),
     initialData: EVENTS_CALENDAR,
-    retry: false
+    ...QUERY_CONFIG,
   });
 }
 export function useMinistries() {
@@ -31,7 +36,7 @@ export function useMinistries() {
     queryKey: ['ministries'],
     queryFn: () => fetchChurchData<any[]>('ministries'),
     initialData: MINISTRIES,
-    retry: false
+    ...QUERY_CONFIG,
   });
 }
 export function useLeadership() {
@@ -39,7 +44,7 @@ export function useLeadership() {
     queryKey: ['leadership'],
     queryFn: () => fetchChurchData<any[]>('leadership'),
     initialData: LEADERSHIP,
-    retry: false
+    ...QUERY_CONFIG,
   });
 }
 export function useChurchInfo() {
@@ -47,7 +52,7 @@ export function useChurchInfo() {
     queryKey: ['churchInfo'],
     queryFn: () => fetchChurchData<any>('churchInfo'),
     initialData: CHURCH_INFO,
-    retry: false
+    ...QUERY_CONFIG,
   });
 }
 export function useServiceTimes() {
@@ -55,7 +60,7 @@ export function useServiceTimes() {
     queryKey: ['serviceTimes'],
     queryFn: () => fetchChurchData<any[]>('serviceTimes'),
     initialData: SERVICE_TIMES,
-    retry: false
+    ...QUERY_CONFIG,
   });
 }
 export function useGivingInfo() {
@@ -63,15 +68,16 @@ export function useGivingInfo() {
     queryKey: ['givingInfo'],
     queryFn: () => fetchChurchData<any>('givingInfo'),
     initialData: GIVING_INFO,
-    retry: false
+    ...QUERY_CONFIG,
   });
 }
 export function useUpdateChurchData() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ type, data, token }: { type: string; data: any; token: string }) => 
+    mutationFn: ({ type, data, token }: { type: string; data: any; token: string }) =>
       updateChurchData(type, data, token),
     onSuccess: (_, variables) => {
+      // Direct invalidation to trigger refresh across tabs/components
       queryClient.invalidateQueries({ queryKey: [variables.type] });
     },
   });

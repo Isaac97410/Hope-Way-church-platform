@@ -6,14 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { adminLogin, seedChurchData } from '@/lib/api';
 import { useSermons, useEvents, useChurchInfo, useServiceTimes, useUpdateChurchData } from '@/hooks/use-church-data';
-import { 
-  SERMONS, 
-  EVENTS_CALENDAR, 
-  MINISTRIES, 
-  LEADERSHIP, 
-  CHURCH_INFO, 
-  SERVICE_TIMES, 
-  GIVING_INFO 
+import {
+  SERMONS,
+  EVENTS_CALENDAR,
+  MINISTRIES,
+  LEADERSHIP,
+  CHURCH_INFO,
+  SERVICE_TIMES,
+  GIVING_INFO
 } from '@/lib/data';
 import { toast } from 'sonner';
 import { Loader2, Lock, Save, RefreshCw } from 'lucide-react';
@@ -21,11 +21,19 @@ export function AdminPage() {
   const [token, setToken] = React.useState<string | null>(localStorage.getItem('admin_token'));
   const [password, setPassword] = React.useState('');
   const [isLoggingIn, setIsLoggingIn] = React.useState(false);
+  // Local states for JSON editing to prevent loops
+  const [sermonsJson, setSermonsJson] = React.useState('');
+  const [eventsJson, setEventsJson] = React.useState('');
+  const [servicesJson, setServicesJson] = React.useState('');
   const { data: sermons } = useSermons();
   const { data: events } = useEvents();
   const { data: churchInfo } = useChurchInfo();
   const { data: serviceTimes } = useServiceTimes();
   const updateMutation = useUpdateChurchData();
+  // Initialize local state when data arrives
+  React.useEffect(() => { if (sermons) setSermonsJson(JSON.stringify(sermons, null, 2)); }, [sermons]);
+  React.useEffect(() => { if (events) setEventsJson(JSON.stringify(events, null, 2)); }, [events]);
+  React.useEffect(() => { if (serviceTimes) setServicesJson(JSON.stringify(serviceTimes, null, 2)); }, [serviceTimes]);
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoggingIn(true);
@@ -44,12 +52,17 @@ export function AdminPage() {
     setToken(null);
     localStorage.removeItem('admin_token');
   };
-  const handleUpdate = (type: string, data: any) => {
+  const handleUpdate = (type: string, jsonString: string) => {
     if (!token) return;
-    updateMutation.mutate({ type, data, token }, {
-      onSuccess: () => toast.success(`${type} updated successfully`),
-      onError: () => toast.error(`Failed to update ${type}`)
-    });
+    try {
+      const parsedData = JSON.parse(jsonString);
+      updateMutation.mutate({ type, data: parsedData, token }, {
+        onSuccess: () => toast.success(`${type} updated successfully`),
+        onError: () => toast.error(`Failed to update ${type}`)
+      });
+    } catch (err) {
+      toast.error(`Invalid JSON format in ${type}`);
+    }
   };
   const handleSeed = async () => {
     if (!token) return;
@@ -79,9 +92,9 @@ export function AdminPage() {
               <p className="text-deep-ocean/60 mt-2">Access restricted to church staff.</p>
             </div>
             <form onSubmit={handleLogin} className="space-y-4">
-              <Input 
-                type="password" 
-                placeholder="Enter Admin Password" 
+              <Input
+                type="password"
+                placeholder="Enter Admin Password"
                 className="sketchy-border-sm h-12"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -106,7 +119,7 @@ export function AdminPage() {
           </div>
           <div className="flex gap-4">
             <Button variant="outline" onClick={handleSeed} className="sketchy-border-sm flex gap-2">
-              <RefreshCw className="w-4 h-4" /> Initialize KV
+              <RefreshCw className="w-4 h-4" /> Reset to Defaults
             </Button>
             <Button variant="ghost" onClick={handleLogout} className="text-red-500">Logout</Button>
           </div>
@@ -120,45 +133,32 @@ export function AdminPage() {
           <TabsContent value="sermons">
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-display font-bold">Live Sermons ({sermons?.length})</h2>
-                <Button onClick={() => handleUpdate('sermons', sermons)} className="bg-terra-cotta text-white sketchy-border-sm">
-                  <Save className="w-4 h-4 mr-2" /> Save All Changes
+                <h2 className="text-2xl font-display font-bold">Sermon Data Management</h2>
+                <Button onClick={() => handleUpdate('sermons', sermonsJson)} disabled={updateMutation.isPending} className="bg-terra-cotta text-white sketchy-border-sm">
+                  {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                  Save All Changes
                 </Button>
               </div>
-              <p className="text-deep-ocean/60 italic text-sm">Directly editing the raw JSON for flexibility in this phase.</p>
-              <textarea 
+              <textarea
                 className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-bush-sand"
-                defaultValue={JSON.stringify(sermons, null, 2)}
-                onBlur={(e) => {
-                  try {
-                    const parsed = JSON.parse(e.target.value);
-                    handleUpdate('sermons', parsed);
-                  } catch (err) {
-                    toast.error('Invalid JSON format');
-                  }
-                }}
+                value={sermonsJson}
+                onChange={(e) => setSermonsJson(e.target.value)}
               />
             </IllustrativeCard>
           </TabsContent>
           <TabsContent value="events">
             <IllustrativeCard className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-display font-bold">Upcoming Events ({events?.length})</h2>
-                <Button onClick={() => handleUpdate('events', events)} className="bg-terra-cotta text-white sketchy-border-sm">
-                   <Save className="w-4 h-4 mr-2" /> Save All Changes
+                <h2 className="text-2xl font-display font-bold">Upcoming Events Data</h2>
+                <Button onClick={() => handleUpdate('events', eventsJson)} disabled={updateMutation.isPending} className="bg-terra-cotta text-white sketchy-border-sm">
+                   {updateMutation.isPending ? <Loader2 className="animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                   Save All Changes
                 </Button>
               </div>
-              <textarea 
+              <textarea
                 className="w-full min-h-[400px] font-mono text-sm p-4 sketchy-border-sm bg-bush-sand"
-                defaultValue={JSON.stringify(events, null, 2)}
-                onBlur={(e) => {
-                  try {
-                    const parsed = JSON.parse(e.target.value);
-                    handleUpdate('events', parsed);
-                  } catch (err) {
-                    toast.error('Invalid JSON format');
-                  }
-                }}
+                value={eventsJson}
+                onChange={(e) => setEventsJson(e.target.value)}
               />
             </IllustrativeCard>
           </TabsContent>
@@ -168,35 +168,30 @@ export function AdminPage() {
                 <h3 className="text-xl font-display font-bold">Church Basics</h3>
                 <div className="space-y-2">
                    <label className="text-xs font-bold uppercase text-deep-ocean/50">Tagline</label>
-                   <Input 
+                   <Input
                     defaultValue={churchInfo?.tagline}
                     className="sketchy-border-sm"
-                    onBlur={(e) => handleUpdate('churchInfo', { ...churchInfo, tagline: e.target.value })}
+                    onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, tagline: e.target.value }))}
                    />
                 </div>
                 <div className="space-y-2">
                    <label className="text-xs font-bold uppercase text-deep-ocean/50">Lead Pastor</label>
-                   <Input 
+                   <Input
                     defaultValue={churchInfo?.pastor}
                     className="sketchy-border-sm"
-                    onBlur={(e) => handleUpdate('churchInfo', { ...churchInfo, pastor: e.target.value })}
+                    onBlur={(e) => handleUpdate('churchInfo', JSON.stringify({ ...churchInfo, pastor: e.target.value }))}
                    />
                 </div>
               </IllustrativeCard>
               <IllustrativeCard className="space-y-4">
-                <h3 className="text-xl font-display font-bold">Service Times</h3>
-                <p className="text-sm text-deep-ocean/60 mb-4">Edit the schedule displayed on the home page.</p>
-                <textarea 
+                <div className="flex justify-between items-center mb-4">
+                   <h3 className="text-xl font-display font-bold">Service Times</h3>
+                   <Button size="sm" onClick={() => handleUpdate('serviceTimes', servicesJson)} className="bg-deep-ocean text-white h-8">Save Times</Button>
+                </div>
+                <textarea
                   className="w-full min-h-[200px] font-mono text-sm p-4 sketchy-border-sm bg-bush-sand"
-                  defaultValue={JSON.stringify(serviceTimes, null, 2)}
-                  onBlur={(e) => {
-                    try {
-                      const parsed = JSON.parse(e.target.value);
-                      handleUpdate('serviceTimes', parsed);
-                    } catch (err) {
-                      toast.error('Invalid JSON format');
-                    }
-                  }}
+                  value={servicesJson}
+                  onChange={(e) => setServicesJson(e.target.value)}
                 />
               </IllustrativeCard>
             </div>
